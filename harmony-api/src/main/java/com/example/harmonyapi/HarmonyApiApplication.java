@@ -18,12 +18,12 @@ public class HarmonyApiApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		String sql = "INSERT INTO public.user (identifiant, mdp, pseudo) VALUES ('id', 'mdp', 'pseudo')";
+		/*String sql = "INSERT INTO public.user (identifiant, mdp, pseudo) VALUES ('id', 'mdp', 'pseudo')";
 
 		int rows = jdbcTemplate.update(sql);
 		if (rows > 0) {
 			System.out.println("A new row has been inserted.");
-		}
+		}*/
 	}
 
 }
