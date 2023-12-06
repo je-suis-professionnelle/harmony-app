@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin("http://127.0.0.1:5500/")
+@CrossOrigin("http://127.0.0.1:5500/") /* ça marche ce truc ??*/
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -22,9 +22,11 @@ public class UserController {
             List<User> users = new ArrayList<User>();
 
             if (pseudo == null)
-                userRepository.getAll().forEach(users::add);
+                userRepository.findAll().forEach(users::add);
+                /*System.out.println("getAll");*/
             else
-                userRepository.findByPseudo(pseudo).forEach(users::add);
+                /*userRepository.findByPseudo(pseudo).forEach(users::add);*/
+                System.out.println("findByPseudo "+pseudo);
 
             if (users.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -36,7 +38,18 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/{id}")
+    @PostMapping("/users")
+    public ResponseEntity<User> createTutorial(@RequestBody User user) {
+        try {
+            User _user = userRepository
+                    .save(new User(user.getMdp(), user.getPseudo()));
+            return new ResponseEntity<>(_user, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /*@GetMapping("/users/{id}")
     public ResponseEntity<User> getUserByLogin(@PathVariable("login") long login) {
         User tutorial = userRepository.findByLogin(login);
 
@@ -55,7 +68,7 @@ public class UserController {
         } catch (Exception e) {
             return new ResponseEntity<>("User was not created.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 
     /*@PutMapping("/users/{id}")
     public ResponseEntity<String> updateUser(@PathVariable("id") long id, @RequestBody User tutorial) {

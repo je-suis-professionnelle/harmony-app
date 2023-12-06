@@ -1,27 +1,37 @@
 package com.example.harmonyapi;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "users")
 public class User {
 
-    private String identifiant;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "identifiant")
+    private long identifiant;
+
+    @Column(name = "mdp")
     private String mdp;
+
+    @Column(name = "pseudo")
     private String pseudo;
 
     public User() {
 
     }
 
-    public User(String identifiant, String mdp, String pseudo)
+    public User(String mdp, String pseudo)
     {
-        this.identifiant = identifiant;
         this.mdp = mdp;
         this.pseudo = pseudo;
     }
 
-    public String getIdentifiant() {
+    public long getIdentifiant() {
         return identifiant;
     }
 
-    public void setIdentifiant(String identifiant) {
+    public void setIdentifiant(long identifiant) {
         this.identifiant = identifiant;
     }
 

@@ -1,4 +1,4 @@
-package com.example.harmonyapi.jdbc.postgresql;
+/*package com.example.harmonyapi.jdbc.postgresql;
 
 import com.example.harmonyapi.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,3 +51,4 @@ public class JdbcUserRepository implements UserRepository {
         return 0;
     }
 }
+*/
