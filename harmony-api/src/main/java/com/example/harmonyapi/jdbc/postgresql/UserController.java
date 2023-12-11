@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-@CrossOrigin("http://127.0.0.1:5500/") /* ça marche ce truc ??*/
+/*@CrossOrigin("http://127.0.0.1:5500/")*/
+@CrossOrigin("http://localhost:5173/") /* ça marche ce truc ??*/
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -39,12 +41,39 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> createTutorial(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@RequestBody User user) {
         try {
             User _user = userRepository
                     .save(new User(user.getMdp(), user.getPseudo()));
             return new ResponseEntity<>(_user, HttpStatus.CREATED);
         } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/users/login")
+    public ResponseEntity<User> logUser(@RequestBody User user) {
+        try {
+            // Récupérer l'utilisateur par le pseudo
+            Optional<User> optionalUser = userRepository.findByPseudo(user.getPseudo());
+
+            // Vérifier si l'utilisateur existe
+            if (optionalUser.isPresent()) {
+                User _user = optionalUser.get();
+
+                // Vérifier le mot de passe
+                if (_user.getMdp().equals(user.getMdp())) {
+                    return new ResponseEntity<>(_user, HttpStatus.OK);
+                } else {
+                    // Mot de passe incorrect
+                    return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+                }
+            } else {
+                // Utilisateur non trouvé
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            // Erreur interne du serveur
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
