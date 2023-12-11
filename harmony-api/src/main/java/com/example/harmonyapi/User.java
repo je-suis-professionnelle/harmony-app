@@ -2,6 +2,9 @@ package com.example.harmonyapi;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -10,6 +13,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "identifiant")
     private long identifiant;
+
+    @OneToMany(mappedBy = "user")
+    private List<GroupUser> groupUsers;
+
+    /*
+    @OneToMany(mappedBy = "idUser")
+    private List<GroupUser> groupUsers;
+
+     */
 
     @Column(name = "mdp")
     private String mdp;
@@ -31,10 +43,26 @@ public class User {
         return identifiant;
     }
 
-    public void setIdentifiant(long identifiant) {
-        this.identifiant = identifiant;
+    public void addGroup(Group group) {
+        if (groupUsers == null) {
+            groupUsers = new ArrayList<>();
+        }
+        GroupUser groupUser = new GroupUser(group, this);
+
+        groupUsers.add(groupUser);
     }
 
+    /*
+    public void addGroup(long idGroup) {
+        if (groupUsers == null) {
+            groupUsers = new ArrayList<>();
+        }
+        GroupUser groupUser = new GroupUser(idGroup, identifiant);
+
+        groupUsers.add(groupUser);
+    }
+
+     */
     public String getMdp() {
         return mdp;
     }
