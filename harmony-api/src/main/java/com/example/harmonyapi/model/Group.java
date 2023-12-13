@@ -1,6 +1,6 @@
-package com.example.harmonyapi;
+package com.example.harmonyapi.model;
 
-import com.example.harmonyapi.jdbc.postgresql.ExpenseId;
+import com.example.harmonyapi.jpa.postgresql.ExpenseId;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -17,16 +17,6 @@ public class Group {
 
     @OneToMany(mappedBy = "group")
     private List<GroupUser> groupUsers;
-
-    /*
-    @OneToMany(mappedBy = "idGroup")
-    private List<GroupUser> groupUsers;
-
-     */
-
-    /*@ElementCollection
-    @Column(name = "pseudos")
-    private List<String> pseudos;*/
 
     @Column(name = "title")
     private String title;

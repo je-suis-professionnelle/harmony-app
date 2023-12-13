@@ -1,6 +1,6 @@
-package com.example.harmonyapi.jdbc.postgresql;
+package com.example.harmonyapi.jpa.postgresql;
 
-import com.example.harmonyapi.Expense;
+import com.example.harmonyapi.model.Expense;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.example.harmonyapi;
+package com.example.harmonyapi.jpa.postgresql;
 
 import java.io.Serializable;
 
@@ -6,11 +6,6 @@ public class GroupUserId implements Serializable {
 
     private long group;
     private long user;
-
-    /*private long idGroup;
-    private long idUser;
-
-     */
 
     public GroupUserId() {
 
@@ -43,32 +38,4 @@ public class GroupUserId implements Serializable {
         return false;
     }
 
-    /*public GroupUserId(long idGroup, long idUser)
-    {
-        this.idGroup = idGroup;
-        this.idUser = idUser;
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) (this.idGroup + this.idUser);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || !(obj instanceof GroupUserId)) {
-            return false;
-        }
-        GroupUserId groupUserId = (GroupUserId) obj;
-        if (groupUserId.idGroup == this.idGroup && groupUserId.idUser == this.idUser) {
-            return true;
-        }
-        return false;
-    }
-
-     */
 }

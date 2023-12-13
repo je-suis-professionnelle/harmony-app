@@ -1,6 +1,6 @@
-package com.example.harmonyapi;
+package com.example.harmonyapi.model;
 
-import com.example.harmonyapi.jdbc.postgresql.ExpenseId;
+import com.example.harmonyapi.jpa.postgresql.ExpenseId;
 import jakarta.persistence.*;
 
 @Entity

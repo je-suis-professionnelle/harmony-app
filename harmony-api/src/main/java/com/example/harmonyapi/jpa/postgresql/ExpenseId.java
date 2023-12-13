@@ -1,6 +1,4 @@
-package com.example.harmonyapi.jdbc.postgresql;
-
-import com.example.harmonyapi.Group;
+package com.example.harmonyapi.jpa.postgresql;
 
 import java.io.Serializable;
 

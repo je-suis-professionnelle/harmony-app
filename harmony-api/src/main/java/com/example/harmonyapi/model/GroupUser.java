@@ -1,20 +1,12 @@
-package com.example.harmonyapi;
+package com.example.harmonyapi.model;
 
+import com.example.harmonyapi.jpa.postgresql.GroupUserId;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "group_user")
 @IdClass(GroupUserId.class)
 public class GroupUser {
-
-    /*
-    @Id
-    @Column(name = "idGroup")
-    private long idGroup;
-
-    @Id
-    @Column(name = "idUser")
-    private long idUser;*/
 
     @Id
     @ManyToOne

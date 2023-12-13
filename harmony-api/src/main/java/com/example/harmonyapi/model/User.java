@@ -1,8 +1,8 @@
-package com.example.harmonyapi;
+package com.example.harmonyapi.model;
 
+import com.example.harmonyapi.model.GroupUser;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,12 +16,6 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<GroupUser> groupUsers;
-
-    /*
-    @OneToMany(mappedBy = "idUser")
-    private List<GroupUser> groupUsers;
-
-     */
 
     @Column(name = "mdp")
     private String mdp;
@@ -43,6 +37,7 @@ public class User {
         return identifiant;
     }
 
+    /*
     public void addGroup(Group group) {
         if (groupUsers == null) {
             groupUsers = new ArrayList<>();
@@ -51,18 +46,8 @@ public class User {
 
         groupUsers.add(groupUser);
     }
-
-    /*
-    public void addGroup(long idGroup) {
-        if (groupUsers == null) {
-            groupUsers = new ArrayList<>();
-        }
-        GroupUser groupUser = new GroupUser(idGroup, identifiant);
-
-        groupUsers.add(groupUser);
-    }
-
      */
+
     public String getMdp() {
         return mdp;
     }
