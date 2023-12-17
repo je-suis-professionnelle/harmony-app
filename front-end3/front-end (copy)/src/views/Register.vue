@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <h2 class="title">S'inscrire</h2>
+    <h2 class="title">S'inscrire {{ this.$store.state.auth.loggedIn }}</h2>
 
     <Form @submit="handleRegister" :validation-schema="schema">
       <div v-if="!successful">
@@ -66,7 +66,6 @@ export default {
                     .required("Le mot de passe est requis !")
                     .min(8, "Le mot de passe doit avoir au moins 8 caractères !")
                     .max(20, "Le mot de passe ne doit pas dépasser 20 caractères !"), 
-        // Add other fields and validations as needed
       }),
     };
   },
@@ -80,13 +79,6 @@ export default {
       this.$router.push('/groupes');
     }
   },
-  // watch: {
-  // loggedIn(newValue) {
-  //   if (newValue) {
-  //     this.$router.push('/groupes');
-  //   }
-  // },
-// },
   methods: {
     handleRegister(user) {
       this.message = "";
@@ -115,102 +107,3 @@ export default {
   }
 };
 </script>
-
-<!-- <template>
-  <inscrire/>
-</template>
-  
-<script>
-// @ is an alias to /src
-
-import inscrire from "@/components/inscrire.vue";
-export default {
-  name: "About",
-  components: {
-    inscrire
-  },
-};
-</script> -->
-
-<!-- <template>
-  <div class="box">
-    <h2 class="title">S'inscrire</h2>
-
-    <form @submit.prevent="handleRegister">
-      <div class="field">
-        <label class="label">Pseudo</label>
-        <div class="control has-icons-left has-icons-right">
-          <input class="input" type="text" v-model="user.pseudo" placeholder="Entrer votre pseudo">
-          <span class="icon is-small is-left">
-            <i class="fas fa-user"></i>
-          </span>
-          <span class="icon is-small is-right">
-            <i class="fas fa-check" v-if="user.pseudo.length >= 5"></i>
-          </span>
-        </div>
-        <p class="help is-success" v-if="user.pseudo.length >= 5">This pseudo is available</p>
-      </div>
-
-      <div class="field">
-        <label class="label">Mot de passe</label>
-        <div class="control has-icons-left has-icons-right">
-          <input class="input" v-model="user.mdp" type="mdp" placeholder="8 caracteres minimum" required />
-        </div>
-      </div>
-
-      <button class="button is-info">
-        S'inscrire
-      </button>
-    </form>
-
-    <span>Déjà inscrit ? <a href="/">Se connecter</a> </span>
-  </div>
-</template>
-
-<script>
-import User from '../models/user';
-
-export default {
-  name: 'inscrire',
-  data() {
-    return {
-      user: new User('', '', ''),
-      submitted: false,
-      successful: false,
-      message: ''
-    };
-  },
-  computed: {
-    loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
-    }
-  },
-  mounted() {
-    if (this.loggedIn) {
-      this.$router.push('/profile');
-    }
-  },
-  methods: {
-    handleRegister() {
-      this.message = '';
-      this.submitted = true;
-      // Implement your form validation logic here if needed
-
-      // Assuming validation passed, dispatch the registration
-      this.$store.dispatch('auth/register', this.user).then(
-        data => {
-          this.message = data.message;
-          this.successful = true;
-        },
-        error => {
-          this.message =
-            (error.response && error.response.data) ||
-            error.message ||
-            error.toString();
-          this.successful = false;
-        }
-      );
-    }
-  }
-};
-</script> -->
