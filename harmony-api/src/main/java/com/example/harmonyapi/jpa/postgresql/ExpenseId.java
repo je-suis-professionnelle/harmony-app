@@ -3,6 +3,7 @@ package com.example.harmonyapi.jpa.postgresql;
 import java.io.Serializable;
 
 public class ExpenseId implements Serializable {
+
     private String pseudo;
     private long timestamp;
     private long idGroup;

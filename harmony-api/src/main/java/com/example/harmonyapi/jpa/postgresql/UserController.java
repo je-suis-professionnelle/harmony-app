@@ -37,7 +37,18 @@ public class UserController {
         }
     }
 
-    @PostMapping("/users")
+    @PostMapping("/users/auth/signup")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        try {
+            User _user = userRepository
+                    .save(new User(user.getPseudo(), user.getMdp()));
+            return new ResponseEntity<>(_user, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /*@PostMapping("/users")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         try {
             User _user = userRepository
@@ -46,7 +57,7 @@ public class UserController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 
     @PostMapping("/users/login")
     public ResponseEntity<User> logUser(@RequestBody User user) {
