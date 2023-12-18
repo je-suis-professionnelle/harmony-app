@@ -22,23 +22,23 @@ public class Group {
     private String title;
 
     @Column(name = "idOwner")
-    private long idOwner;
+    private String idOwner;
 
     public Group() {
 
     }
 
-    public Group(long idOwner, String title)
+    public Group(String idOwner, String title)
     {
         this.idOwner = idOwner;
         this.title = title;
     }
 
-    public long getIdOwner() {
+    public String getPseudoOwner() {
         return idOwner;
     }
 
-    public void setIdOwner(long idOwner) {
+    public void setIdOwner(String idOwner) {
         this.idOwner = idOwner;
     }
 

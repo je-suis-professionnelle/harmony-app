@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin("http://localhost:5173/") /* ça marche ce truc ??*/
@@ -24,7 +23,7 @@ public class GroupController {
     @Autowired
     private GroupUserRepository groupUserRepository;
 
-    @GetMapping("/byTitle")
+    /*@GetMapping("/byTitle")
     public ResponseEntity<List<Group>> getGroupsByTitleContaining(@RequestParam(required = true) String title) {
         try {
             List<Group> groups = new ArrayList<Group>();
@@ -39,12 +38,19 @@ public class GroupController {
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
+    }*/
 
-    @GetMapping("/byId")
-    public ResponseEntity<List<Group>> getGroupsByIdUser(@RequestParam(required = true) long idUser) {
+    @GetMapping()
+    public ResponseEntity<List<Group>> getGroups(@RequestParam(required = false) String pseudoUser, @RequestParam(required = false) String title) {
         try {
-            List<Group> groups = groupRepository.findGroupsByIdUser(idUser);
+            List<Group> groups;
+            if (pseudoUser != null) {
+                groups = groupRepository.findGroupsByPseudoUser(pseudoUser);
+            /* } else if (title != null) {
+                groups = groupRepository.findByTitleContainingAndPseudoUser(title, pseudoUser);*/
+            } else {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
 
             if (groups.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -56,12 +62,27 @@ public class GroupController {
         }
     }
 
+    /*@GetMapping()
+    public ResponseEntity<List<Group>> getGroupsByPseudoUser(@RequestParam(required = true) String pseudoUser) {
+        try {
+            List<Group> groups = groupRepository.findGroupsByPseudoUser(pseudoUser);
+
+            if (groups.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(groups, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }*/
+
     @PostMapping("/groups")
     public ResponseEntity<Group> createGroup(@RequestBody Group group) {
         try {
             Group savedGroup = groupRepository.save(group);
 
-            User owner = userRepository.findById(group.getIdOwner()).orElseThrow(() -> new Exception("Owner not found"));
+            User owner = userRepository.findByPseudo(group.getPseudoOwner()).orElseThrow(() -> new Exception("Owner not found"));
             GroupUser groupUser = new GroupUser(savedGroup, owner);
             groupUserRepository.save(groupUser);
 

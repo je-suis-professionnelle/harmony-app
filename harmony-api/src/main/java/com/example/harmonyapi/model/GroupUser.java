@@ -15,7 +15,7 @@ public class GroupUser {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "idUser", referencedColumnName = "identifiant")
+    @JoinColumn(name = "pseudoUser", referencedColumnName = "pseudo")
     private User user;
 
     public GroupUser() {

@@ -1,17 +1,19 @@
 package com.example.harmonyapi.jpa.postgresql;
 
+import com.example.harmonyapi.model.User;
+
 import java.io.Serializable;
 
 public class GroupUserId implements Serializable {
 
     private long group;
-    private long user;
+    private User user;
 
     public GroupUserId() {
 
     }
 
-    public GroupUserId(long group, long user)
+    public GroupUserId(long group, User user)
     {
         this.group = group;
         this.user = user;
@@ -19,7 +21,7 @@ public class GroupUserId implements Serializable {
 
     @Override
     public int hashCode() {
-        return (int) (this.group + this.user);
+        return (int) (this.group + this.user.hashCode());
     }
 
     @Override

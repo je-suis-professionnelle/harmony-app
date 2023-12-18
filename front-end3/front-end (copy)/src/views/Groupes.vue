@@ -47,6 +47,16 @@ export default {
             creationGroupeModal: null, // Ajoute une référence à la modal
         };
     },
+    computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+    }
+    },
+    mounted() {
+        if (this.loggedIn) {
+        this.$router.push('/register');
+        }
+    },
     created() {
     //         if (this.loggedIn) {
     //     this.$router.push('/accueil');

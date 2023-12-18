@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface GroupRepository extends JpaRepository<Group, Long> {
 
-    @Query("SELECT gu.group FROM GroupUser gu WHERE gu.user.id = :userId")
-    List<Group> findGroupsByIdUser(@Param("userId") long userId);
+    @Query("SELECT gu.group FROM GroupUser gu WHERE gu.user.id = :pseudo")
+    List<Group> findGroupsByPseudoUser(@Param("pseudo") String pseudo);
 
-    List<Group> findByTitleContaining(String title);
+    /*List<Group> findByTitleContainingAndPseudoUser(String title, String pseudoUser);*/
 
 }

@@ -9,35 +9,37 @@ import java.util.List;
 @Table(name = "users")
 public class User {
 
-    @Id
+    /*@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "identifiant")
-    private long identifiant;
+    private long identifiant;*/
 
     @OneToMany(mappedBy = "user")
     private List<GroupUser> groupUsers;
 
-    @Column(name = "mdp")
-    private String mdp;
-
+    @Id
     @Column(name = "pseudo")
     private String pseudo;
+
+    @Column(name = "mdp")
+    private String mdp;
 
     public User() {
 
     }
 
-    public User(String mdp, String pseudo)
+    public User(String pseudo, String mdp)
     {
         this.mdp = mdp;
         this.pseudo = pseudo;
     }
 
-    public long getIdentifiant() {
+
+/*    public long getIdentifiant() {
         return identifiant;
     }
 
-    /*
+
     public void addGroup(Group group) {
         if (groupUsers == null) {
             groupUsers = new ArrayList<>();

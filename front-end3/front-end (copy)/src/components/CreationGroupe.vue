@@ -20,12 +20,12 @@
                     </div>
 
                     <!-- ajouter des participants -->
-                    <button class="button is-success" @click="createGroup">Sauvegarder</button>
+                    <!-- <button class="button is-success">Sauvegarder</button> -->
                 </Form>
             </section>
             <footer class="modal-card-foot">
                 <!-- Boutons ou autres éléments de pied de modal -->
-                <button class="button is-success" @click="createGroup">Sauvegarder</button>
+                <button type="submit" class="button is-success" @click="createGroup">Sauvegarder</button>
                 <button class="button" @click="fermerModal">Annuler</button>
             </footer>
         </div>
