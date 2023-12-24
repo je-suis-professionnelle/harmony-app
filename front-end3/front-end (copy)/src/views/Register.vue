@@ -37,7 +37,7 @@
       {{ message }}
     </div>
 
-    <span>Déjà inscrit ? <router-link to="/">Se connecter</router-link> </span>
+    <span>Déjà inscrit ? <router-link to="/login">Se connecter</router-link> </span>
   </div>
 </template>
 
@@ -90,7 +90,7 @@ export default {
           this.message = data.message;
           this.successful = true;
           this.loading = false;
-          this.$router.push('/groupes');
+          this.$router.push({ path: '/login', query: { inscriptionSuccess: true } });
         },
         (error) => {
           this.message =

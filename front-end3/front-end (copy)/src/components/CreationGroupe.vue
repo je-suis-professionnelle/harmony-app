@@ -64,7 +64,7 @@ export default {
     },
     created() {
         if (this.$store.state.auth.user) {
-            this.loggedInUserPseudo = this.$store.state.auth.user.pseudo;
+            this.loggedInUserPseudo = this.$store.state.auth.user.username;
         } else {
             this.loggedInUserPseudo = "problème";
         }

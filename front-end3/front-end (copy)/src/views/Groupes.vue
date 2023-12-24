@@ -1,7 +1,7 @@
 <template>
     <article class="panel is-primary">
         <p class="panel-heading">
-            Vos groupes {{ this.$store.state.auth.status.loggedIn }}
+            Vos groupes
         </p>
         <!-- <p class="panel-tabs">
     <a class="is-active">All</a>
@@ -21,7 +21,7 @@
                 <button class="button is-primary" @click="ouvrirModal">Créer un groupe</button>
             </div>
         </div>
-        <!-- <Groupe v-for="groupe in groupes" :key="groupe.id" :groupe="groupe" /> -->
+        <Groupe v-for="groupe in groupes" :key="groupe.id" :groupe="groupe" />
         <CreationGroupe ref="creationGroupeModal" />
     </article>
 </template>
@@ -65,7 +65,7 @@ export default {
     methods: {
         // getGroupes() {
 
-        //     fetch(`http://localhost:8080/users/${pseudo}/groupes`)
+        //     fetch(`http://localhost:8080/groupes`)
         //         .then(response => {
         //             if (!response.ok) {
         //                 throw new Error("Erreur lors de la requête");
@@ -132,6 +132,9 @@ export default {
         // if (this.loggedIn) {
         //     this.$router.push('/accueil');
         // }
+        if (!this.loggedIn) {
+            this.$router.push('/register');
+        }
     },
 };
 
