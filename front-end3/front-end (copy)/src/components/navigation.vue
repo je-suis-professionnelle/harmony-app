@@ -47,6 +47,9 @@
             <router-link class="button is-light" to="/login">
               Log in
             </router-link>
+            <div class="button is-light" @click="logout">
+              Log out
+            </div>
             <!-- ou afficher le profil hihi -->
           </div>
         </div>
@@ -60,7 +63,12 @@ export default {
   data() {
     return {}
   },
-  methods: {}
+  methods: {
+    logout() {
+      this.$store.dispatch('auth/logout')
+      this.$router.push('/login')
+    }
+  }
 };
 </script>
 

@@ -8,13 +8,14 @@
                 <button class="delete" aria-label="close" @click="fermerModal"></button>
             </header>
             <section class="modal-card-body">
-                <!-- Contenu de ta modal ici -->
-                <Form @submit="createGroup" :validation-schema="schema">
+
+                <Form :validation-schema="schema">
                     <Field name="idOwner" type="text" :value="loggedInUserPseudo" />
                     <div class="field">
                         <label class="label">Titre du groupe</label>
                         <div class="control has-icons-left has-icons-right">
-                            <Field name="title" type="text" class="input" placeholder="Entrer le titre" />
+                            <Field v-model="groupData.title" name="title" type="text" class="input"
+                                placeholder="Entrer le titre" />
                         </div>
                         <ErrorMessage name="title" class="help is-danger" />
                     </div>
@@ -60,6 +61,10 @@ export default {
                     .min(5, "Le titre doit avoir au moins 5 caractères !")
                     .max(50, "Le titre ne doit pas dépasser 50 caractères !"),
             }),
+            groupData: {
+                idOwner: '',
+                title: '',
+            },
         };
     },
     created() {
@@ -77,24 +82,27 @@ export default {
             this.visible = false;
         },
 
-        async createGroup(groupData) {
+        async createGroup() {
             console.log("dans createGroup");
-            groupData.idOwner = this.loggedInUserPseudo;
+            this.groupData.idOwner = this.loggedInUserPseudo;
             this.message = "";
             this.successful = false;
             this.loading = true;
 
             try {
                 console.log("dans try");
+                console.log("titre", this.groupData.title);
                 // Utilisation d'Axios pour effectuer la requête POST
-                const response = await axios.post("http://localhost:8080/groups/groups", groupData);
-                console.log("response :");
+                const response = await axios.post("http://localhost:8080/groups/groups", this.groupData);
                 // Traitement de la réponse
                 this.message = response.data.message;
                 this.successful = true;
                 this.loading = false;
                 this.fermerModal();
+                this.$emit('groupCreated');
             } catch (error) {
+                console.error("Erreur lors de la récupération des groupes :", error);
+                console.error("Erreur détaillée :", error.response.data);
                 console.log("catch :", error);
                 // Gestion des erreurs
                 this.message =
@@ -108,12 +116,6 @@ export default {
                 console.log(this.message);
             }
         },
-        // saveAndCloseModal() {
-        //     // Sauvegarder les données et fermer la modal
-        //     // this.fermerModal();
-        //     this.createGroup();
-        //     this.fermerModal();
-        // },
     },
 }
 

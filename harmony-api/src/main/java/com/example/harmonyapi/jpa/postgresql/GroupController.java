@@ -7,6 +7,9 @@ import com.example.harmonyapi.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,59 +26,31 @@ public class GroupController {
     @Autowired
     private GroupUserRepository groupUserRepository;
 
-    /*@GetMapping("/byTitle")
-    public ResponseEntity<List<Group>> getGroupsByTitleContaining(@RequestParam(required = true) String title) {
-        try {
-            List<Group> groups = new ArrayList<Group>();
-
-            groupRepository.findByTitleContaining(title).forEach(groups::add);
-
-            if (groups.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(groups, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }*/
-
     @GetMapping()
-    public ResponseEntity<List<Group>> getGroups(@RequestParam(required = false) String pseudoUser, @RequestParam(required = false) String title) {
+    public ResponseEntity<List<Group>> getGroups() {
         try {
-            List<Group> groups;
-            if (pseudoUser != null) {
-                groups = groupRepository.findGroupsByPseudoUser(pseudoUser);
-            /* } else if (title != null) {
-                groups = groupRepository.findByTitleContainingAndPseudoUser(title, pseudoUser);*/
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            System.out.println("jlcef : " + authentication);
+            if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetails) {
+                String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+
+                List<Group> groups;
+
+                // Utilise le username pour obtenir les groupes
+                groups = groupRepository.findGroupsByPseudoUser(username);
+
+                if (groups.isEmpty()) {
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                }
+
+                return new ResponseEntity<>(groups, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
-
-            if (groups.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(groups, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    /*@GetMapping()
-    public ResponseEntity<List<Group>> getGroupsByPseudoUser(@RequestParam(required = true) String pseudoUser) {
-        try {
-            List<Group> groups = groupRepository.findGroupsByPseudoUser(pseudoUser);
-
-            if (groups.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(groups, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }*/
 
     @PostMapping("/groups")
     public ResponseEntity<Group> createGroup(@RequestBody Group group) {

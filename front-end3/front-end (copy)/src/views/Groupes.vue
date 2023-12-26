@@ -3,13 +3,6 @@
         <p class="panel-heading">
             Vos groupes
         </p>
-        <!-- <p class="panel-tabs">
-    <a class="is-active">All</a>
-    <a>Public</a>
-    <a>Private</a>
-    <a>Sources</a>
-    <a>Forks</a>
-  </p> -->
         <div class="panel-block">
             <p class="control has-icons-left">
                 <input class="input is-primary" type="text" placeholder="Search">
@@ -21,120 +14,86 @@
                 <button class="button is-primary" @click="ouvrirModal">Créer un groupe</button>
             </div>
         </div>
-        <Groupe v-for="groupe in groupes" :key="groupe.id" :groupe="groupe" />
-        <CreationGroupe ref="creationGroupeModal" />
+        <router-link :to="'/groupes/' + groupe.title" v-for="groupe in groupes" :key="groupe.id">
+            <Groupe :groupe="groupe" :nom="groupe.title" />
+        </router-link>
+        <CreationGroupe ref="creationGroupeModal" @groupCreated="getGroupes" />
     </article>
 </template>
 
 <script>
+import axios from "axios";
+
 import Groupe from '../components/Groupe.vue'
 import CreationGroupe from '../components/CreationGroupe.vue'
+import { RouterLink } from "vue-router";
 export default {
     name: 'Groupes',
     props: {
-        // pseudo: {
-        //     type: String,
-        //     required: true,
-        // },
     },
     components: {
         Groupe,
         CreationGroupe,
+        RouterLink
     },
     data() {
         return {
+            loggedInUserPseudo: '',
             groupes: [], // Liste des groupes récupérée du serveur
             creationGroupeModal: null, // Ajoute une référence à la modal
         };
     },
     computed: {
-    loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
-    }
-    },
-    mounted() {
-        if (this.loggedIn) {
-        this.$router.push('/register');
+        loggedIn() {
+            return this.$store.state.auth.status.loggedIn;
         }
     },
+    mounted() {
+        if (!this.loggedIn) {
+            this.$router.push('/login');
+        }
+        if (this.$store.state.auth.user) {
+            this.loggedInUserPseudo = this.$store.state.auth.user.username;
+        } else {
+            alert("Vous n'êtes pas connecté");
+        }
+        this.getGroupes(this.loggedInUserPseudo);
+        console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    },
     created() {
-    //         if (this.loggedIn) {
-    //     this.$router.push('/accueil');
-    // }
-        },
+    },
     methods: {
-        // getGroupes() {
+        getGroupes(user) {
+            this.loading = true;
+            const token = this.$store.state.auth.user.accessToken;
 
-        //     fetch(`http://localhost:8080/groupes`)
-        //         .then(response => {
-        //             if (!response.ok) {
-        //                 throw new Error("Erreur lors de la requête");
-        //             }
-        //             return response.json();
-        //         })
-        //         .then(data => {
-        //             this.groupes = data;
-        //         })
-        //         .catch(error => {
-        //             console.error("Erreur lors de la récupération des groupes :", error);
-        //         });
-        // },
-        ouvrirModal() {
+            // Configure les headers avec le token JWT
+            const headers = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+            axios.get('http://localhost:8080/groups', headers)
+                .then(response => {
+                    this.groupes = response.data;
+                    this.loading = false;
+                })
+                .catch(error => {
+                    console.error(error);
+                    console.error("Erreur lors de la requête :", error);
+                    this.loading = false;
+                });
+        }
+
+        , ouvrirModal() {
             // Utilise la référence pour ouvrir la modal
             this.$refs.creationGroupeModal.ouvrirModal();
         },
-        // openCreationGroupeModal() {
-        //     // Utilise la référence pour ouvrir la modal
-        //     if (this.creationGroupeModal) {
-        //         this.creationGroupeModal.open();
-        //     }
-        // },
-        // createGroupe() {
-        //     fetch(`http://localhost:8080/groupes/${pseudo}`, {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //         },
-        //         body: JSON.stringify(user),
-        //     })
-        //         .then((res) => {
-        //             if (!res.ok) {
-        //                 throw new Error("Erreur lors de la requête");
-        //             }
-        //             return res.json();
-        //         })
-        //         .then((res) => {
-        //             console.log(res);
-        //             if (res.error) {
-        //                 alert(res.error);
-        //             } else {
-        //                 this.userLoggedIn = true;
-        //                 console.log("Vous êtes connecté");
-        //                 // Vérifiez si l'utilisateur est renvoyé dans la réponse
-        //                 // if (res) {
-        //                 console.log("Utilisateur reçu :", res);
-        //                 router.push({ name: 'Groupes', params: { pseudo: this.username } });
-        //                 // }
-        //             }
-        //         })
-        //         .catch((error) => {
-        //             console.error("Erreur lors de la connexion :", error);
-        //         });
-        // }
     },
     computed: {
         loggedIn() {
             return this.$store.state.auth.status.loggedIn;
         },
-    },
-    mounted() {
-        // this.getGroupes();
-        // if (this.loggedIn) {
-        //     this.$router.push('/accueil');
-        // }
-        if (!this.loggedIn) {
-            this.$router.push('/register');
-        }
     },
 };
 
