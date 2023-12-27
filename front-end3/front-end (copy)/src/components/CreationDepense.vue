@@ -10,8 +10,30 @@
             <section class="modal-card-body">
 
                 <Form :validation-schema="schema">
-                    
-                    
+                    <div class="field">
+                        <label class="label">Label</label>
+                        <div class="control has-icons-left">
+                            <Field name="label" as="select">
+                                <option>Restaurant</option>
+                                <option>Hotel</option>
+                                <option>Loisir</option>
+                            <div class="icon is-small is-left">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            </Field>
+                        </div>
+                        <ErrorMessage name="title" />
+                    </div>
+                    <div class="field">
+                        <label class="label">Montant</label>
+                        <Field name="amount" type="number" class="input" placeholder="Montant de la dépense" />
+                        <ErrorMessage name="amount" />
+                    </div>
+                    <div class="field">
+                        <label class="label">Description</label>
+                        <Field name="description" type="text" class="input" placeholder="Description de la dépense" />
+                        <ErrorMessage name="description" />
+                    </div>
                 </Form>
             </section>
             <footer class="modal-card-foot">
@@ -35,12 +57,15 @@ export default {
         ErrorMessage,
     },
     props: {
-
+        groupId: {
+            type: String,
+            required: true,
+        },
     },
     data() {
         return {
             visible: false, // Initialiser la modal comme non visible
-            // loggedInUserPseudo: '',
+            loggedInUserPseudo: '',
             successful: false,
             loading: false,
             message: '',
@@ -50,14 +75,18 @@ export default {
             //         .min(5, "Le titre doit avoir au moins 5 caractères !")
             //         .max(50, "Le titre ne doit pas dépasser 50 caractères !"),
             // }),
-            // groupData: {
-            //     idOwner: '',
-            //     title: '',
-            // },
+            expenseData: {
+                pseudo: '',
+                idGroup: '',
+                timestamp: '',
+                label: '',
+                amount: '',
+                description: '',
+            },
         };
     },
     created() {
-        
+
     },
     methods: {
         ouvrirModal() {
@@ -67,40 +96,46 @@ export default {
             this.visible = false;
         },
 
-        // async createGroup() {
-        //     console.log("dans createGroup");
-        //     this.groupData.idOwner = this.loggedInUserPseudo;
-        //     this.message = "";
-        //     this.successful = false;
-        //     this.loading = true;
+        async createExpense() {
+            console.log("dans exepensecreate");
+            this.expenseData.pseudo = this.$store.state.auth.user.username;
+            this.expenseData.idGroup = this.groupId;
+            this.expenseData.timestamp = Date.now();
+            this.expenseData.label = "ok";
+            this.expenseData.amount = 5.0;
+            this.expenseData.description = "desc";
+            console.log(this.expenseData);
 
-        //     try {
-        //         console.log("dans try");
-        //         console.log("titre", this.groupData.title);
-        //         // Utilisation d'Axios pour effectuer la requête POST
-        //         const response = await axios.post("http://localhost:8080/groups/groups", this.groupData);
-        //         // Traitement de la réponse
-        //         this.message = response.data.message;
-        //         this.successful = true;
-        //         this.loading = false;
-        //         this.fermerModal();
-        //         this.$emit('groupCreated');
-        //     } catch (error) {
-        //         console.error("Erreur lors de la récupération des groupes :", error);
-        //         console.error("Erreur détaillée :", error.response.data);
-        //         console.log("catch :", error);
-        //         // Gestion des erreurs
-        //         this.message =
-        //             (error.response &&
-        //                 error.response.data &&
-        //                 error.response.data.message) ||
-        //             error.message ||
-        //             error.toString();
-        //         this.successful = false;
-        //         this.loading = false;
-        //         console.log(this.message);
-        //     }
-        // },
+            this.message = "";
+            this.successful = false;
+            this.loading = true;
+
+            try {
+                console.log("dans try");
+                // Utilisation d'Axios pour effectuer la requête POST
+                const response = await axios.post("http://localhost:8080/expenses", this.expenseData);
+                // Traitement de la réponse
+                this.message = response.data.message;
+                this.successful = true;
+                this.loading = false;
+                this.fermerModal();
+                this.$emit('expenseCreated');
+            } catch (error) {
+                console.log("dans catch", error.response);
+                console.error("Erreur détaillée :", error.response.data);
+                console.log("catch :", error);
+                // Gestion des erreurs
+                this.message =
+                    (error.response &&
+                        error.response.data &&
+                        error.response.data.message) ||
+                    error.message ||
+                    error.toString();
+                this.successful = false;
+                this.loading = false;
+                console.log(this.message);
+            }
+        },
     },
 }
 

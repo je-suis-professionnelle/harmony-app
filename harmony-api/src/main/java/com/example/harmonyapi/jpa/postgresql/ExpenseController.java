@@ -15,6 +15,26 @@ public class ExpenseController {
     @Autowired
     ExpenseRepository expenseRepository;
 
+    @GetMapping()
+    public ResponseEntity<List<Expense>> getExpensesByIdGroup(@RequestParam(required = true) int idGroup) {
+        try {
+            List<Expense> expenses = expenseRepository.findByIdGroup(idGroup);
+            return new ResponseEntity<>(expenses, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping()
+    public ResponseEntity<Expense> createExpense(@RequestBody Expense expense) {
+        try {
+            Expense savedExpense = expenseRepository.save(expense);
+            return new ResponseEntity<>(savedExpense, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/byPseudoTimestampAndIdGroup")
     public ResponseEntity<Expense> getExpensesByPseudoAndTimestampAndIdGroup(@RequestParam(required = true) String pseudo, @RequestParam(required = true) long timestamp, @RequestParam(required = true) long idGroup) {
         try {

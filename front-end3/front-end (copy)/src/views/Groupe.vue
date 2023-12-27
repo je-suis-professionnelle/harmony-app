@@ -16,9 +16,9 @@
             </div>
         </div>
 
-        <DepenseItem v-for="depense in depenses" :key="depense.identifiant" :depense="depense" />
+        <DepenseItem v-for="depense in this.depenses" :key="depense.identifiant" :depense="depense" />
 
-        <CreationDepense ref="creationDepenseModal" @depenseCreated="getDepenses" />
+        <CreationDepense ref="creationDepenseModal" @depenseCreated="getDepenses" :groupId="this.groupId"/>
     </nav>
 </template>
 
@@ -86,8 +86,9 @@ export default {
                     Authorization: `Bearer ${token}`,
                 },
             };
-            axios.get('http://localhost:8080/expenses', headers)
+            axios.get('http://localhost:8080/expenses', { params: { idGroup: groupId } }, headers)
                 .then(response => {
+                    console.log("depenses", response.data);
                     this.depenses = response.data;
                     this.loading = false;
                 })
@@ -100,7 +101,7 @@ export default {
 
         , ouvrirModal() {
             // Utilise la référence pour ouvrir la modal
-            this.$refs.creationGroupeModal.ouvrirModal();
+            this.$refs.creationDepenseModal.ouvrirModal();
         },
     },
     computed: {

@@ -23,16 +23,24 @@ public class Expense {
     @Column(name = "amount")
     private double amount;
 
+    @Column(name = "label")
+    private String label;
+
+    @Column(name = "description")
+    private String description;
+
     public Expense() {
 
     }
 
-    public Expense(String pseudo, long timestamp, long idGroup, double amount)
+    public Expense(String pseudo, long timestamp, long idGroup, double amount, String label, String description)
     {
         this.pseudo = pseudo;
         this.timestamp = timestamp;
         this.idGroup = idGroup;
         this.amount = amount;
+        this.label = label;
+        this.description = description;
     }
 
     public String getPseudo() {
@@ -65,6 +73,22 @@ public class Expense {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public String getLabel() {
+        return this.label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }
