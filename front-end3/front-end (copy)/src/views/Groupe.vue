@@ -1,8 +1,9 @@
 <template>
-    <article class="panel is-primary">
+    <nav class="panel">
         <p class="panel-heading">
-            Vos groupes
+            Groupe titre
         </p>
+
         <div class="panel-block">
             <p class="control has-icons-left">
                 <input class="input is-primary" type="text" placeholder="Search">
@@ -11,58 +12,71 @@
                 </span>
             </p>
             <div>
-                <button class="button is-primary" @click="ouvrirModal">Créer un groupe</button>
+                <button class="button is-primary" @click="ouvrirModal">Créer une dépense</button>
             </div>
         </div>
-        <GroupeItem v-for="groupe in groupes" :key="groupe.identifiant" :groupe="groupe" />
-        <CreationGroupe ref="creationGroupeModal" @groupCreated="getGroupes" />
-    </article>
+
+        <DepenseItem v-for="depense in depenses" :key="depense.identifiant" :depense="depense" />
+
+        <CreationDepense ref="creationDepenseModal" @depenseCreated="getDepenses" />
+    </nav>
 </template>
 
 <script>
 import axios from "axios";
 
-import GroupeItem from '../components/GroupeItem.vue'
-import CreationGroupe from '../components/CreationGroupe.vue'
+import DepenseItem from '../components/DepenseItem.vue'
+import CreationDepense from '../components/CreationDepense.vue'
 import { RouterLink } from "vue-router";
-
 export default {
-    name: 'Groupes',
+    name: 'Groupe',
     props: {
+        // Utilise `props: true` dans la configuration de la route pour passer les paramètres en tant que props
+        groupId: {
+            type: String,
+            required: true,
+        },
+        groupDetails: {
+            type: Object,
+        },
     },
     components: {
-        GroupeItem,
-        CreationGroupe,
+        DepenseItem,
+        CreationDepense,
         RouterLink
     },
     data() {
         return {
+            groupe: null,
             loggedInUserPseudo: '',
-            groupes: [], // Liste des groupes récupérée du serveur
-            creationGroupeModal: null, // Ajoute une référence à la modal
+            depenses: [], // Liste des depenses récupérée du serveur
+            creationDepenseModal: null, // Ajoute une référence à la modal
         };
     },
     computed: {
+        getGroupeDetails() {
+            return this.$store.getters.getGroupeById(this.groupId);
+        },
         loggedIn() {
             return this.$store.state.auth.status.loggedIn;
         }
     },
     mounted() {
-        if (!this.loggedIn) {
-            this.$router.push('/login');
-        }
-        if (this.$store.state.auth.user) {
-            this.loggedInUserPseudo = this.$store.state.auth.user.username;
-        } else {
-            alert("Vous n'êtes pas connecté");
-        }
-        this.getGroupes();
+        // this.groupDetails = this.getGroupeDetails();
+        this.getDepenses(this.groupId);
     },
     created() {
+        // Convertir groupId en nombre
+        const groupIdNumber = Number(this.groupId);
+
+        // Utiliser groupIdNumber dans le reste de ta logique
     },
+    // created() {
+    // const group = this.group;
+    // this.getDepenses(group.id);
+    // },
     methods: {
-        
-        getGroupes() {
+        getDepenses(groupId) {
             this.loading = true;
             const token = this.$store.state.auth.user.accessToken;
 
@@ -72,9 +86,9 @@ export default {
                     Authorization: `Bearer ${token}`,
                 },
             };
-            axios.get('http://localhost:8080/groups', headers)
+            axios.get('http://localhost:8080/expenses', headers)
                 .then(response => {
-                    this.groupes = response.data;
+                    this.depenses = response.data;
                     this.loading = false;
                 })
                 .catch(error => {
@@ -82,8 +96,9 @@ export default {
                     console.error("Erreur lors de la requête :", error);
                     this.loading = false;
                 });
-        },
-        ouvrirModal() {
+        }
+
+        , ouvrirModal() {
             // Utilise la référence pour ouvrir la modal
             this.$refs.creationGroupeModal.ouvrirModal();
         },

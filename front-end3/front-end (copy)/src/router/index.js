@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Accueil from '../views/Accueil.vue'
 import Home from '../views/Home.vue';
+import Groupe from '../views/Groupe.vue';
+
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +19,12 @@ const router = createRouter({
       name: 'Accueil',
       component: Accueil
       // component: Home
+    },
+    {
+      path: '/groupes/:groupId',
+      name: 'Groupe',
+      component: Groupe,
+      props: true, // Permet de passer les paramètres en tant que props
     },
     {
       path: '/about',
@@ -71,6 +80,20 @@ const router = createRouter({
     },
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  const publicPages = ['/login', '/register'];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem('user');
+
+  // trying to access a restricted page + not logged in
+  // redirect to login page
+  if (authRequired && !loggedIn) {
+    next('/login');
+  } else {
+    next();
+  }
+});
 
 export default router
 

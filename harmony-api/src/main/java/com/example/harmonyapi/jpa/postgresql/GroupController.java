@@ -30,7 +30,6 @@ public class GroupController {
     public ResponseEntity<List<Group>> getGroups() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            System.out.println("jlcef : " + authentication);
             if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetails) {
                 String username = ((UserDetails) authentication.getPrincipal()).getUsername();
 

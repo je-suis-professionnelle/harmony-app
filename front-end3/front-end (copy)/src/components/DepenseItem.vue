@@ -1,9 +1,9 @@
 <template>
-    <a class="panel-block">
+    <a class="panel-block is-active">
         <span class="panel-icon">
             <i class="fas fa-book" aria-hidden="true"></i>
         </span>
-        {{ nom }}
+        bulma
     </a>
 </template>
   
