@@ -1,7 +1,7 @@
 <template>
     <nav class="panel">
         <p class="panel-heading">
-            Groupe titre
+            {{title}}
         </p>
 
         <div class="panel-block">
@@ -18,12 +18,14 @@
 
         <DepenseItem v-for="depense in this.depenses" :key="depense.identifiant" :depense="depense" />
 
-        <CreationDepense ref="creationDepenseModal" @depenseCreated="getDepenses" :groupId="this.groupId"/>
+        <CreationDepense ref="creationDepenseModal" @expenseCreated="getDepenses" :groupId=this.groupId />
     </nav>
 </template>
 
 <script>
 import axios from "axios";
+
+import Expense from '../models/expense.js';
 
 import DepenseItem from '../components/DepenseItem.vue'
 import CreationDepense from '../components/CreationDepense.vue'
@@ -33,6 +35,11 @@ export default {
     props: {
         // Utilise `props: true` dans la configuration de la route pour passer les paramètres en tant que props
         groupId: {
+            type: Number,
+            required: true,
+            // coerce: value => Number(value), //pas sur
+        },
+        title: {
             type: String,
             required: true,
         },
@@ -63,9 +70,11 @@ export default {
     },
     mounted() {
         // this.groupDetails = this.getGroupeDetails();
-        this.getDepenses(this.groupId);
+        // this.getDepenses(groupId);
     },
     created() {
+        console.log("groupid created", this.groupId);
+        this.getDepenses(this.groupId);
         // Convertir groupId en nombre
         const groupIdNumber = Number(this.groupId);
 
@@ -77,6 +86,7 @@ export default {
     // },
     methods: {
         getDepenses(groupId) {
+            console.log("groupId", groupId);
             this.loading = true;
             const token = this.$store.state.auth.user.accessToken;
 
@@ -89,11 +99,10 @@ export default {
             axios.get('http://localhost:8080/expenses', { params: { idGroup: groupId } }, headers)
                 .then(response => {
                     console.log("depenses", response.data);
-                    this.depenses = response.data;
+                    this.depenses = response.data.map(depenseData => new Expense(depenseData));
                     this.loading = false;
                 })
                 .catch(error => {
-                    console.error(error);
                     console.error("Erreur lors de la requête :", error);
                     this.loading = false;
                 });

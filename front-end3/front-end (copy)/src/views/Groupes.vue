@@ -14,13 +14,14 @@
                 <button class="button is-primary" @click="ouvrirModal">Créer un groupe</button>
             </div>
         </div>
-        <GroupeItem v-for="groupe in groupes" :key="groupe.identifiant" :groupe="groupe" />
+        <GroupeItem v-for="groupe in groupes" :key=groupe.identifiant :groupe="groupe" />
         <CreationGroupe ref="creationGroupeModal" @groupCreated="getGroupes" />
     </article>
 </template>
 
 <script>
 import axios from "axios";
+import Groupe from '../models/group.js';
 
 import GroupeItem from '../components/GroupeItem.vue'
 import CreationGroupe from '../components/CreationGroupe.vue'
@@ -57,6 +58,7 @@ export default {
             alert("Vous n'êtes pas connecté");
         }
         this.getGroupes();
+        console.log("groupes : ", this.groupes);
     },
     created() {
     },
@@ -74,11 +76,12 @@ export default {
             };
             axios.get('http://localhost:8080/groups', headers)
                 .then(response => {
-                    this.groupes = response.data;
+                    // this.groupes = response.data;
+                    this.groupes = response.data.map(groupData => new Groupe(groupData));
+                    console.log("groupes : ", this.groupes);
                     this.loading = false;
                 })
                 .catch(error => {
-                    console.error(error);
                     console.error("Erreur lors de la requête :", error);
                     this.loading = false;
                 });

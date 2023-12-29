@@ -12,26 +12,23 @@
                 <Form :validation-schema="schema">
                     <div class="field">
                         <label class="label">Label</label>
-                        <div class="control has-icons-left">
-                            <Field name="label" as="select">
+                        <div class="control">
+                            <select v-model="expenseData.label" name="label">
                                 <option>Restaurant</option>
                                 <option>Hotel</option>
                                 <option>Loisir</option>
-                            <div class="icon is-small is-left">
-                                <i class="fas fa-globe"></i>
-                            </div>
-                            </Field>
+                            </select>
                         </div>
                         <ErrorMessage name="title" />
                     </div>
                     <div class="field">
                         <label class="label">Montant</label>
-                        <Field name="amount" type="number" class="input" placeholder="Montant de la dépense" />
+                        <Field v-model="expenseData.amount" name="amount" type="number" class="input" placeholder="Montant de la dépense" />
                         <ErrorMessage name="amount" />
                     </div>
                     <div class="field">
                         <label class="label">Description</label>
-                        <Field name="description" type="text" class="input" placeholder="Description de la dépense" />
+                        <Field v-model="expenseData.description" name="description" type="text" class="input" placeholder="Description de la dépense" />
                         <ErrorMessage name="description" />
                     </div>
                 </Form>
@@ -58,7 +55,7 @@ export default {
     },
     props: {
         groupId: {
-            type: String,
+            type: Number,
             required: true,
         },
     },
@@ -77,7 +74,7 @@ export default {
             // }),
             expenseData: {
                 pseudo: '',
-                idGroup: '',
+                idGroup: 0,
                 timestamp: '',
                 label: '',
                 amount: '',
@@ -98,12 +95,10 @@ export default {
 
         async createExpense() {
             console.log("dans exepensecreate");
+            console.log("groupdId", this.groupId);
             this.expenseData.pseudo = this.$store.state.auth.user.username;
-            this.expenseData.idGroup = this.groupId;
+            this.expenseData.idGroup = Number(this.groupId);
             this.expenseData.timestamp = Date.now();
-            this.expenseData.label = "ok";
-            this.expenseData.amount = 5.0;
-            this.expenseData.description = "desc";
             console.log(this.expenseData);
 
             this.message = "";
@@ -119,7 +114,7 @@ export default {
                 this.successful = true;
                 this.loading = false;
                 this.fermerModal();
-                this.$emit('expenseCreated');
+                this.$emit('expenseCreated', this.expenseData.idGroup);
             } catch (error) {
                 console.log("dans catch", error.response);
                 console.error("Erreur détaillée :", error.response.data);

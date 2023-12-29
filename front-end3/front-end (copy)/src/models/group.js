@@ -1,9 +1,9 @@
 class Groupe {
-    constructor(id, idOwner, titre) {
-      this.id = id;
-      this.idOwner = idOwner;
-      this.titre = titre;
-    }
+  constructor(data) {
+    this.identifiant = data.identifiant;
+    this.id_owner = data.id_owner;
+    this.title = data.title;
   }
-  
-  export default Groupe;
+}
+
+export default Groupe;

@@ -9,22 +9,19 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: Accueil
-      // component: Home
-    },
-    {
       path: '/accueil',
       name: 'Accueil',
       component: Accueil
       // component: Home
     },
     {
-      path: '/groupes/:groupId',
+      path: '/groupes/:groupId/:title',
       name: 'Groupe',
       component: Groupe,
-      props: true, // Permet de passer les paramètres en tant que props
+      props: (route) => ({
+        groupId: parseInt(route.params.groupId, 10),
+        title: route.params.title,
+      }),
     },
     {
       path: '/about',

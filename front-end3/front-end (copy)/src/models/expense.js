@@ -1,11 +1,11 @@
 class Expense {
-    constructor(pseudo, idGroup, timestamp, amount, label, description) {
-        this.pseudo = pseudo;
-        this.idGroup = idGroup;
-        this.timestamp = timestamp;
-        this.amount = amount;
-        this.label = label;
-        this.description = description;
+    constructor(data) {
+        this.pseudo = data.pseudo;
+        this.id_group = Number(data.id_group);
+        this.timestamp = data.timestamp;
+        this.amount = data.amount;
+        this.label = data.label;
+        this.description = data.description;
     }
 }
 
