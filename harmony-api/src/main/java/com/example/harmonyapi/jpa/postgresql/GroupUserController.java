@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin("http://localhost:5173/") /* ça marche ce truc ??*/
+@CrossOrigin(origins = "*") /* ça marche ce truc ??*/
 @RestController
 @RequestMapping("/groupUser")
 public class GroupUserController {

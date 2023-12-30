@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost:5173/") /* ça marche ce truc ??*/
+@CrossOrigin(origins = "*")/* ça marche ce truc ??*/
 @RestController
 @RequestMapping("/groups")
 public class GroupController {
@@ -26,9 +26,20 @@ public class GroupController {
     @Autowired
     private GroupUserRepository groupUserRepository;
 
+    @CrossOrigin(origins = "*")/* ça marche ce truc ??*/
+    @RequestMapping(
+            value = "/**",
+            method = RequestMethod.OPTIONS
+    )
+    public ResponseEntity handle() {
+        System.out.println("handle OPTIONS");
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @GetMapping()
     public ResponseEntity<List<Group>> getGroups() {
         try {
+            System.out.println("getGroups");
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetails) {
                 String username = ((UserDetails) authentication.getPrincipal()).getUsername();

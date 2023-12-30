@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost:5173/") /* ça marche ce truc ??*/
+@CrossOrigin(origins = "*") /* ça marche ce truc ??*/
 @RestController
 @RequestMapping("/expenses")
 public class ExpenseController {

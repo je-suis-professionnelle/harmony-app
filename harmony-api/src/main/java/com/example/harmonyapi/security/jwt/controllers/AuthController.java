@@ -28,7 +28,7 @@ import com.example.harmonyapi.jpa.postgresql.UserRepository;
 import com.example.harmonyapi.security.jwt.JwtUtils;
 import com.example.harmonyapi.security.services.UserDetailsImpl;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600, allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

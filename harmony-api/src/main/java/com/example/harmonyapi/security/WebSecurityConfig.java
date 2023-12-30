@@ -1,10 +1,12 @@
 package com.example.harmonyapi.security;
 
+import com.example.harmonyapi.CORSFilter;
 import com.example.harmonyapi.security.jwt.AuthEntryPointJwt;
 import com.example.harmonyapi.security.jwt.AuthTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -32,6 +34,11 @@ public class WebSecurityConfig {
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
+
+    @Bean
+    public CORSFilter corsFilter() {
+        return new CORSFilter();
+    }
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -65,6 +72,7 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(antMatcher("/api/auth/**")).permitAll();
+                    auth.requestMatchers(antMatcher(HttpMethod.OPTIONS, "/**")).permitAll();
                     auth.anyRequest().authenticated();
         }
                 );

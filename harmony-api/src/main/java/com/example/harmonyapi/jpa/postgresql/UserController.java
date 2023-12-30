@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin("http://localhost:5173/") /* ça marche ce truc ??*/
+@CrossOrigin(origins = "*") /* ça marche ce truc ??*/
 @RestController
 @RequestMapping("/api")
 public class UserController {
