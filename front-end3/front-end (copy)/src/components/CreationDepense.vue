@@ -105,10 +105,18 @@ export default {
             this.successful = false;
             this.loading = true;
 
+            const token = this.$store.state.auth.user.accessToken;
+            const headers = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            };
+
             try {
                 console.log("dans try");
                 // Utilisation d'Axios pour effectuer la requête POST
-                const response = await axios.post("http://localhost:8080/expenses", this.expenseData);
+                const response = await axios.post("http://localhost:8080/expenses", this.expenseData, headers);
                 // Traitement de la réponse
                 this.message = response.data.message;
                 this.successful = true;

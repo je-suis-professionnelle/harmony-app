@@ -76,6 +76,7 @@ export default {
             };
             axios.get('http://localhost:8080/groups', headers)
                 .then(response => {
+                    console.log("response : ", response);
                     // this.groupes = response.data;
                     this.groupes = response.data.map(groupData => new Groupe(groupData));
                     console.log("groupes : ", this.groupes);

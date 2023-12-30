@@ -1,8 +1,46 @@
 <template>
     <nav class="panel">
-        <p class="panel-heading">
-            {{title}}
-        </p>
+        <!-- <div class="panel-heading">
+            <p>
+                {{title}}
+            </p>
+            <div>
+                <button class="button is-primary" @click="ouvrirModal">Créer une dépense</button>
+            </div>
+        </div> -->
+
+        <div class="panel-heading">
+            <div class="container">
+                <div class="columns is-centered has-text-centered">
+                    <div class="column">
+                        {{ title }}
+                    </div>
+                    <div class="column">
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link">
+                                +
+                            </a>
+
+                            <div class="navbar-dropdown">
+                                <a class="navbar-item" @click="addMember(this.idGroup, 'cricri')">
+                                    Ajouter un membre
+                                </a>
+                                <a class="navbar-item">
+                                    Retirer un membre
+                                </a>
+                                <a class="navbar-item">
+                                    Supprimer le groupe
+                                </a>
+                                <hr class="navbar-divider">
+                                <a class="navbar-item">
+                                    Report an issue
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="panel-block">
             <p class="control has-icons-left">
@@ -112,6 +150,16 @@ export default {
             // Utilise la référence pour ouvrir la modal
             this.$refs.creationDepenseModal.ouvrirModal();
         },
+
+        addMember(groupId, pseudoUser) {
+            axios.post('http://localhost:8080/groupUser', {groupId: groupId, pseudoUser: pseudoUser })
+                .then(response => {
+                    console.log("response", response);
+                })
+                .catch(error => {
+                    console.error("Erreur lors de la requête :", error);
+                });
+        }
     },
     computed: {
         loggedIn() {

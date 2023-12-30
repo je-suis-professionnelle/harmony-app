@@ -92,8 +92,17 @@ export default {
             try {
                 console.log("dans try");
                 console.log("titre", this.groupData.title);
+                const token = this.$store.state.auth.user.accessToken;
+
+                // Configure les headers avec le token JWT
+                const headers = {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                };
                 // Utilisation d'Axios pour effectuer la requête POST
-                const response = await axios.post("http://localhost:8080/groups/groups", this.groupData);
+                const response = await axios.post("http://localhost:8080/groups/groups", this.groupData, headers);
                 // Traitement de la réponse
                 this.message = response.data.message;
                 this.successful = true;
