@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GroupUserRepository extends JpaRepository<GroupUser, Long> {
 
+        public GroupUser findByPseudoUserAndIdGroup(String pseudoUser, long idGroup);
+
 }

@@ -21,6 +21,8 @@ import com.example.harmonyapi.security.services.UserDetailsServiceImpl;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.*;
 
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
+
 
 @Configuration
 @EnableMethodSecurity
@@ -61,19 +63,10 @@ public class WebSecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers(
-                                        new AntPathRequestMatcher("/api/auth/**"),
-                                        new AntPathRequestMatcher("/api/test/**"),
-                                        new RequestHeaderRequestMatcher("X-Requested-With", "XMLHttpRequest"),
-                                        new MediaTypeRequestMatcher(MediaType.valueOf("application/json"))
-                                ).permitAll()
-                                .requestMatchers(new NegatedRequestMatcher(
-                                        new OrRequestMatcher(
-                                                new AntPathRequestMatcher("/api/auth/**"),
-                                                new AntPathRequestMatcher("/api/test/**")
-                                        )
-                                )).authenticated()
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(antMatcher("/api/auth/**")).permitAll();
+                    auth.anyRequest().authenticated();
+        }
                 );
 
         http.authenticationProvider(authenticationProvider());

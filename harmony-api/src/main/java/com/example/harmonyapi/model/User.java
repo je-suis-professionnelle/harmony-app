@@ -14,8 +14,8 @@ public class User {
     @Column(name = "identifiant")
     private long identifiant;*/
 
-    @OneToMany(mappedBy = "user")
-    private List<GroupUser> groupUsers;
+    // @OneToMany(mappedBy = "user")
+    // private List<GroupUser> groupUsers;
 
     @Id
     @Column(name = "pseudo")
@@ -35,12 +35,8 @@ public class User {
     }
 
 
-/*    public long getIdentifiant() {
-        return identifiant;
-    }
 
-
-    public void addGroup(Group group) {
+    /* public void addGroup(Group group) {
         if (groupUsers == null) {
             groupUsers = new ArrayList<>();
         }

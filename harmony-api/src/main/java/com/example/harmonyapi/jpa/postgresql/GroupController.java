@@ -57,7 +57,7 @@ public class GroupController {
             Group savedGroup = groupRepository.save(group);
 
             User owner = userRepository.findByPseudo(group.getPseudoOwner()).orElseThrow(() -> new Exception("Owner not found"));
-            GroupUser groupUser = new GroupUser(savedGroup, owner);
+            GroupUser groupUser = new GroupUser(group.getPseudoOwner(), group.getIdentifiant());
             groupUserRepository.save(groupUser);
 
             return new ResponseEntity<>(savedGroup, HttpStatus.CREATED);
@@ -66,4 +66,20 @@ public class GroupController {
         }
     }
 
+    /*
+    @PostMapping("/groups")
+    public ResponseEntity<Group> createGroup(@RequestBody Group group) {
+        try {
+            Group savedGroup = groupRepository.save(group);
+
+            User owner = userRepository.findByPseudo(group.getPseudoOwner()).orElseThrow(() -> new Exception("Owner not found"));
+            GroupUser groupUser = new GroupUser(savedGroup, owner);
+            groupUserRepository.save(groupUser);
+
+            return new ResponseEntity<>(savedGroup, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    */
 }

@@ -15,8 +15,8 @@ public class Group {
     @Column(name = "identifiant")
     private long identifiant;
 
-    @OneToMany(mappedBy = "group")
-    private List<GroupUser> groupUsers;
+    /*@OneToMany(mappedBy = "group")
+    private List<GroupUser> groupUsers;*/
 
     @Column(name = "title")
     private String title;
@@ -51,14 +51,15 @@ public class Group {
     }
     */
 
-    public void addUser(User user) {
+
+/*public void addUser(User user) {
         if (groupUsers == null) {
             groupUsers = new ArrayList<>();
         }
         GroupUser groupUser = new GroupUser(this, user);
 
         groupUsers.add(groupUser);
-    }
+    }*/
 
     /*public void addUser(long idUser) {
         if (groupUsers == null) {
