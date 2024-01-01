@@ -63,7 +63,7 @@ export default {
     created() {
     },
     methods: {
-        
+
         getGroupes() {
             this.loading = true;
             const token = this.$store.state.auth.user.accessToken;
@@ -77,14 +77,22 @@ export default {
             axios.get('http://localhost:8080/groups', headers)
                 .then(response => {
                     console.log("response : ", response);
-                    // this.groupes = response.data;
-                    this.groupes = response.data.map(groupData => new Groupe(groupData));
+                    if (response.data.length != 0) {
+                        this.groupes = response.data.map(groupData => new Groupe(groupData));
+                    }
                     console.log("groupes : ", this.groupes);
                     this.loading = false;
                 })
                 .catch(error => {
-                    console.error("Erreur lors de la requête :", error);
-                    this.loading = false;
+                    console.error("Erreur lors de la récupération des groupes :", error);
+
+                    if (error.response.status === 401 || error.response.status === 403) {
+                        this.$store.dispatch('auth/logout');
+                        this.$router.push('/login');
+                    } else {
+                        console.error("Erreur lors de la récupération des groupes :", error);
+                        this.loading = false;
+                    }
                 });
         },
         ouvrirModal() {
