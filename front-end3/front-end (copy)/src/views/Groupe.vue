@@ -134,6 +134,8 @@ export default {
                     Authorization: `Bearer ${token}`,
                 },
             };
+
+            console.log("headers", headers);
             axios.get('http://localhost:8080/expenses', { params: { idGroup: groupId } }, headers)
                 .then(response => {
                     console.log("depenses", response.data);
@@ -141,7 +143,7 @@ export default {
                     this.loading = false;
                 })
                 .catch(error => {
-                    console.error("Erreur lors de la requête :", error);
+                    console.error("Erreur lors de la récupération du groupe :", error);
                     this.loading = false;
                 });
         }
