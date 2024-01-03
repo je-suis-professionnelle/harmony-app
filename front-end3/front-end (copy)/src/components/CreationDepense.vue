@@ -106,11 +106,12 @@ export default {
             this.loading = true;
 
             const token = this.$store.state.auth.user.accessToken;
+
+            // Configure les headers avec le token JWT
             const headers = {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                },
+                }
             };
 
             try {

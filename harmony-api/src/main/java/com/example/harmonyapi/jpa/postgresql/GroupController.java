@@ -41,8 +41,10 @@ public class GroupController {
         try {
             System.out.println("getGroups");
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            System.out.println("authentication: " + (UserDetails) authentication.getPrincipal());
             if (authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetails) {
                 String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+                System.out.println("username: " + username);
 
                 List<Group> groups;
 

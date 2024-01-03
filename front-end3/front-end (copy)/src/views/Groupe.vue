@@ -22,10 +22,10 @@
                             </a>
 
                             <div class="navbar-dropdown">
-                                <a class="navbar-item" @click="addMember(this.idGroup, 'cricri')">
+                                <a class="navbar-item" @click="ouvrirAjoutMembre">
                                     Ajouter un membre
                                 </a>
-                                <a class="navbar-item">
+                                <a class="navbar-item" @click="ouvrirSuppressionMembre">
                                     Retirer un membre
                                 </a>
                                 <a class="navbar-item">
@@ -57,6 +57,9 @@
         <DepenseItem v-for="depense in this.depenses" :key="depense.identifiant" :depense="depense" />
 
         <CreationDepense ref="creationDepenseModal" @expenseCreated="getDepenses" :groupId=this.groupId />
+        <AjouterMembre ref="ajoutMembreModal" :groupId=this.groupId />
+        <RetirerMembre ref="suppressionMembreModal" :groupId=this.groupId />
+
     </nav>
 </template>
 
@@ -67,6 +70,8 @@ import Expense from '../models/expense.js';
 
 import DepenseItem from '../components/DepenseItem.vue'
 import CreationDepense from '../components/CreationDepense.vue'
+import AjouterMembre from '../components/AjouterMembre.vue'
+import RetirerMembre from '../components/RetirerMembre.vue'
 import { RouterLink } from "vue-router";
 export default {
     name: 'Groupe',
@@ -88,6 +93,8 @@ export default {
     components: {
         DepenseItem,
         CreationDepense,
+        AjouterMembre,
+        RetirerMembre,
         RouterLink
     },
     data() {
@@ -128,15 +135,14 @@ export default {
             this.loading = true;
             const token = this.$store.state.auth.user.accessToken;
 
-            // Configure les headers avec le token JWT
-            const headers = {
-                headers: {
-                    Authorization: `Bearer ${token}`,
+            let config = {
+                headers: { 'Authorization': 'Bearer ' + token },
+                params: {
+                    idGroup: groupId
                 },
-            };
+            }
 
-            console.log("headers", headers);
-            axios.get('http://localhost:8080/expenses', { params: { idGroup: groupId } }, headers)
+            axios.get('http://localhost:8080/expenses', config)
                 .then(response => {
                     console.log("depenses", response.data);
                     this.depenses = response.data.map(depenseData => new Expense(depenseData));
@@ -146,22 +152,19 @@ export default {
                     console.error("Erreur lors de la récupération du groupe :", error);
                     this.loading = false;
                 });
-        }
-
-        , ouvrirModal() {
+        },
+        ouvrirModal() {
             // Utilise la référence pour ouvrir la modal
             this.$refs.creationDepenseModal.ouvrirModal();
         },
-
-        addMember(groupId, pseudoUser) {
-            axios.post('http://localhost:8080/groupUser', {groupId: groupId, pseudoUser: pseudoUser })
-                .then(response => {
-                    console.log("response", response);
-                })
-                .catch(error => {
-                    console.error("Erreur lors de la requête :", error);
-                });
-        }
+        ouvrirAjoutMembre() {
+            // Utilise la référence pour ouvrir la modal
+            this.$refs.ajoutMembreModal.ouvrirModal();
+        },
+        ouvrirSuppressionMembre() {
+            // Utilise la référence pour ouvrir la modal
+            this.$refs.suppressionMembreModal.ouvrirModal();
+        },
     },
     computed: {
         loggedIn() {
