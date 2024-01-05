@@ -7,9 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @CrossOrigin(origins = "*") /* ça marche ce truc ??*/
 @RestController
-@RequestMapping("/groupUser")
 public class GroupUserController {
     @Autowired
     GroupUserRepository groupUserRepository;
@@ -17,7 +18,7 @@ public class GroupUserController {
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping()
+    @GetMapping("/groupUser")
     public ResponseEntity<GroupUser> getGroupUserByPseudoAndIdGroup(@RequestParam(required = true) String pseudoUser, @RequestParam(required = true) int idGroup) {
         try {
             GroupUser groupUser = groupUserRepository.findByPseudoUserAndIdGroup(pseudoUser, idGroup);
@@ -27,7 +28,17 @@ public class GroupUserController {
         }
     }
 
-    @PostMapping()
+    @GetMapping("/groupUsers")
+    public ResponseEntity<List<GroupUser>> getGroupUserByIdGroup(@RequestParam(required = true) int idGroup) {
+        try {
+            List<GroupUser> groupUsers = groupUserRepository.findByIdGroup(idGroup);
+            return new ResponseEntity<>(groupUsers, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/groupUser")
     public ResponseEntity<GroupUser> addGroupUser(@RequestBody GroupUser groupUser) {
         try {
             if (userAlreadyInGroup(groupUser.getIdGroup(), groupUser.getPseudoUser())) {
@@ -49,7 +60,7 @@ public class GroupUserController {
         return userRepository.findByPseudo(pseudoUser).isEmpty();
     }
 
-    @DeleteMapping()
+    @DeleteMapping("/groupUser")
     public ResponseEntity<Expense> deleteGroupUser(@RequestParam(required = true) String pseudoUser, @RequestParam(required = true) int idGroup) {
         try {
             if(userDoesntExist(pseudoUser)) {

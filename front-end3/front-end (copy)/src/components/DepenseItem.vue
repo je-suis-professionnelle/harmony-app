@@ -26,6 +26,7 @@
 <script>
 import Expense from '../models/expense.js';
 export default {
+    name: "DepenseItem",
     props: {
         // Définir une propriété "message" qui sera passée depuis le composant parent
         depense: {

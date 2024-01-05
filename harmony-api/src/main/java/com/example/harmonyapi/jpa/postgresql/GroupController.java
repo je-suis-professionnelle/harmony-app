@@ -5,6 +5,7 @@ import com.example.harmonyapi.model.GroupUser;
 import com.example.harmonyapi.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")/* ça marche ce truc ??*/
 @RestController
@@ -76,6 +78,21 @@ public class GroupController {
             return new ResponseEntity<>(savedGroup, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/group")
+    public ResponseEntity<?> deleteGroup(@RequestParam(required = true) long id) {
+        try {
+            if (!groupRepository.existsById(id)) {
+                return new ResponseEntity<>("Group not found", HttpStatus.NOT_FOUND);
+            }
+            groupRepository.deleteById(id);
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } catch (EmptyResultDataAccessException e) {
+            return new ResponseEntity<>("Group not found", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
