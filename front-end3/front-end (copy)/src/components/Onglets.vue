@@ -33,7 +33,7 @@
         :balance="calculateBalance(totalByMember[1])"/>
     </div>
     <div class="content" v-bind:class="{ 'is-active': isActive == 'equilibre' }">
-      equilibre content
+      <EquilibreItem />
     </div>
   </div>
 </template>
@@ -52,7 +52,7 @@ export default {
   name: "Onglets",
 
   props: {
-    expenses: {
+        expenses: {
       type: Array,
       required: true
     },

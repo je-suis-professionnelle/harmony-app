@@ -120,6 +120,7 @@ export default {
             myTotal: 0,
             division: 0,
             memberList: [],
+            equilibres: [],
         };
     },
     computed: {
@@ -154,10 +155,6 @@ export default {
                     this.memberList = response.data.map(member => member.pseudoUser);
                     console.log("memberList", this.memberList);
                     this.nbMembers = response.data.length;
-                    
-                    console.log("total", this.total);
-                    console.log("nbMembers", this.nbMembers);
-                    console.log("division getMembers", this.division);
                 })
                 .catch(error => {
                     console.error("Erreur lors de la récupération du groupe :", error);
@@ -167,7 +164,6 @@ export default {
 
         getDepenses(groupId) {
             this.getNbMembers();
-            console.log("groupId", groupId);
             this.loading = true;
             const token = this.$store.state.auth.user.accessToken;
 
@@ -182,27 +178,47 @@ export default {
                 .then(response => {
                     this.depenses = response.data.map(depenseData => new Expense(depenseData));
                     this.totalByMember = new Map(this.memberList.map(member => [member, 0]));
-                    console.log("totalByMember", this.totalByMember);
 
                     this.depenses.forEach(expense => {
                         this.totalByMember.set(expense.pseudo, (this.totalByMember.get(expense.pseudo) || 0) + expense.amount);
                     });
 
-                    console.log("totalByMember", this.totalByMember);
-
                     this.loading = false;
                     this.total = this.depenses.reduce((acc, expense) => acc + expense.amount, 0);
                     this.myTotal = this.depenses.reduce((acc, expense) => (this.loggedInUserPseudo == expense.pseudo ? acc + expense.amount : acc), 0);
                     this.division = this.total / this.nbMembers;
-                    console.log("total", this.total);
-                    console.log("depense 0", this.depenses);
-                    console.log("myTotal", this.myTotal);
-                    console.log("division", this.division);
+                    console.log("equilibres", this.equilibres);
+                    this.calculerEquilibres();
+                    console.log("equilibres", this.equilibres);
                 })
                 .catch(error => {
                     console.error("Erreur lors de la récupération du groupe :", error);
                     this.loading = false;
                 });
+        },
+
+        calculerEquilibres() {
+            console.log("memberList", this.memberList);
+            console.log("totalByMember", this.totalByMember);
+
+            this.memberList.forEach(debiteur => {
+                this.memberList.forEach(crediteur => {
+                    if (debiteur !== crediteur) {
+                        const montantDu = this.totalByMember.get(debiteur);
+                        const montantAvoir = this.division - montantDu;
+                        const montantDuCrediteur = this.totalByMember.get(crediteur);
+                        const montantAvoirCrediteur = this.division - montantDuCrediteur;
+
+                        const dette = {
+                            debiteur: debiteur,
+                            crediteur: crediteur,
+                            montant: Math.min(montantAvoir, montantAvoirCrediteur)
+                        };
+
+                        this.equilibres.push(dette);
+                    }
+                });
+            })
         },
 
         ouvrirModal() {
