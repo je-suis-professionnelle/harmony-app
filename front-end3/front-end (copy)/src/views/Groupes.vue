@@ -50,7 +50,6 @@ export default {
         },
         groupesFiltered() {
             return this.groupes.filter(group => {
-                console.log("filteredGroupes : ", filteredGroupes);
                 return group.title.toLowerCase().includes(this.search.toLowerCase())
             })
         },
@@ -102,11 +101,6 @@ export default {
         ouvrirModal() {
             // Utilise la référence pour ouvrir la modal
             this.$refs.creationGroupeModal.ouvrirModal();
-        },
-    },
-    computed: {
-        loggedIn() {
-            return this.$store.state.auth.status.loggedIn;
         },
     },
 };
