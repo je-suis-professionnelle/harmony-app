@@ -1,7 +1,7 @@
 class Expense {
     constructor(data) {
         this.pseudo = data.pseudo;
-        this.id_group = Number(data.id_group);
+        this.idGroup = Number(data.idGroup);
         this.timestamp = data.timestamp;
         this.amount = data.amount;
         this.label = data.label;

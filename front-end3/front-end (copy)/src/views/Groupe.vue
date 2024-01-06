@@ -1,13 +1,5 @@
 <template>
     <nav class="panel">
-        <!-- <div class="panel-heading">
-            <p>
-                {{title}}
-            </p>
-            <div>
-                <button class="button is-primary" @click="ouvrirModal">Créer une dépense</button>
-            </div>
-        </div> -->
 
         <div class="panel-heading">
             <div class="container">
@@ -54,8 +46,13 @@
             </div>
         </div>
 
-        <Onglets :total="this.total" :expenses='this.depenses' :division="this.division" :myTotal="this.myTotal"
-            :totalByMember="this.totalByMember" />
+        <Onglets @expenseDeletedP="getDepenses" 
+            :total="this.total" 
+            :expenses='this.depenses' 
+            :division="this.division"
+            :myTotal="this.myTotal" 
+            :totalByMember="this.totalByMember" 
+            :equilibres="this.equilibres"/>
 
         <Resultat :total="this.total" :myTotal="this.myTotal" :division="this.division" />
 
@@ -94,9 +91,6 @@ export default {
             type: String,
             required: true,
         },
-        groupDetails: {
-            type: Object,
-        },
     },
     components: {
         Onglets,
@@ -123,17 +117,9 @@ export default {
             equilibres: [],
         };
     },
-    computed: {
-        getGroupeDetails() {
-            return this.$store.getters.getGroupeById(this.groupId);
-        },
-        loggedIn() {
-            return this.$store.state.auth.status.loggedIn;
-        }
-    },
     created() {
         console.log("groupid created", this.groupId);
-        this.getDepenses(this.groupId);
+        this.getDepenses();
 
         // Convertir groupId en nombre
         const groupIdNumber = Number(this.groupId);
@@ -153,7 +139,6 @@ export default {
             axios.get('http://localhost:8080/groupUsers', config)
                 .then(response => {
                     this.memberList = response.data.map(member => member.pseudoUser);
-                    console.log("memberList", this.memberList);
                     this.nbMembers = response.data.length;
                 })
                 .catch(error => {
@@ -162,7 +147,7 @@ export default {
                 });
         },
 
-        getDepenses(groupId) {
+        getDepenses() {
             this.getNbMembers();
             this.loading = true;
             const token = this.$store.state.auth.user.accessToken;
@@ -170,7 +155,7 @@ export default {
             let config = {
                 headers: { 'Authorization': 'Bearer ' + token },
                 params: {
-                    idGroup: groupId
+                    idGroup: this.groupId
                 },
             }
 
@@ -187,9 +172,7 @@ export default {
                     this.total = this.depenses.reduce((acc, expense) => acc + expense.amount, 0);
                     this.myTotal = this.depenses.reduce((acc, expense) => (this.loggedInUserPseudo == expense.pseudo ? acc + expense.amount : acc), 0);
                     this.division = this.total / this.nbMembers;
-                    console.log("equilibres", this.equilibres);
                     this.calculerEquilibres();
-                    console.log("equilibres", this.equilibres);
                 })
                 .catch(error => {
                     console.error("Erreur lors de la récupération du groupe :", error);
@@ -198,27 +181,24 @@ export default {
         },
 
         calculerEquilibres() {
-            console.log("memberList", this.memberList);
-            console.log("totalByMember", this.totalByMember);
+            this.equilibres = [];
+            this.totalByMember.forEach((total, member) => {
+                if (total < this.division) {
+                    let amountOwed = this.division - total;
 
-            this.memberList.forEach(debiteur => {
-                this.memberList.forEach(crediteur => {
-                    if (debiteur !== crediteur) {
-                        const montantDu = this.totalByMember.get(debiteur);
-                        const montantAvoir = this.division - montantDu;
-                        const montantDuCrediteur = this.totalByMember.get(crediteur);
-                        const montantAvoirCrediteur = this.division - montantDuCrediteur;
-
-                        const dette = {
-                            debiteur: debiteur,
-                            crediteur: crediteur,
-                            montant: Math.min(montantAvoir, montantAvoirCrediteur)
-                        };
-
-                        this.equilibres.push(dette);
-                    }
-                });
-            })
+                    this.totalByMember.forEach((otherTotal, otherMember) => {
+                        if (otherTotal > this.division && otherMember !== member) {
+                            const amountToPay = Math.min(amountOwed, otherTotal - this.division);
+                            this.equilibres.push({
+                                from: member,
+                                debt: amountToPay,
+                                to: otherMember,
+                            });
+                            amountOwed -= amountToPay;
+                        }
+                    });
+                }
+            });
         },
 
         ouvrirModal() {
@@ -236,11 +216,6 @@ export default {
         ouvrirSuppressionGroupe() {
             // Utilise la référence pour ouvrir la modal
             this.$refs.suppressionGroupeModal.ouvrirModal();
-        },
-    },
-    computed: {
-        loggedIn() {
-            return this.$store.state.auth.status.loggedIn;
         },
     },
 };

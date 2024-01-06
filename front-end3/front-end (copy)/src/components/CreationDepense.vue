@@ -123,7 +123,7 @@ export default {
                 this.successful = true;
                 this.loading = false;
                 this.fermerModal();
-                this.$emit('expenseCreated', this.expenseData.idGroup);
+                this.$emit('expenseCreated');
             } catch (error) {
                 console.log("dans catch", error.response);
                 console.error("Erreur détaillée :", error.response.data);

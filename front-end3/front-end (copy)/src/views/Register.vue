@@ -1,44 +1,56 @@
 <template>
-  <div class="box">
-    <h2 class="title">S'inscrire {{ this.$store.state.auth.loggedIn }}</h2>
+  <section class="hero is-fullheight">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-centered">
+          <div class="column is-5-tablet is-4-desktop is-3-widescreen">
 
-    <Form @submit="handleRegister" :validation-schema="schema">
-      <div v-if="!successful">
-        <div class="field">
-          <label class="label">Pseudo</label>
-          <div class="control has-icons-left has-icons-right">
-            <Field name="pseudo" type="text" class="input" placeholder="Entrer votre pseudo" />
-            <!-- <span class="icon is-small is-left">
+            <div class="box custom-box">
+              <h2 class="title">Inscription</h2>
+
+              <Form @submit="handleRegister" :validation-schema="schema">
+                <div v-if="!successful">
+                  <div class="field">
+                    <label class="label">Pseudo</label>
+                    <div class="control has-icons-left has-icons-right">
+                      <Field name="pseudo" type="text" class="input" placeholder="Entrer votre pseudo" />
+                      <!-- <span class="icon is-small is-left">
               <i class="fas fa-user"></i>
             </span> -->
-            <!-- <span class="icon is-small is-right">
+                      <!-- <span class="icon is-small is-right">
               <i class="fas fa-check" v-if="user.pseudo.length >= 5"></i>
             </span> -->
-          </div>
-          <ErrorMessage name="pseudo" class="help is-danger" />
-        </div>
+                    </div>
+                    <ErrorMessage name="pseudo" class="help is-danger" />
+                  </div>
 
-        <div class="field">
-          <label class="label">Mot de passe</label>
-          <div class="control has-icons-left has-icons-right">
-            <Field name="mdp" type="password" class="input" placeholder="8 caracteres minimum" />
+                  <div class="field">
+                    <label class="label">Mot de passe</label>
+                    <div class="control has-icons-left has-icons-right">
+                      <Field name="mdp" type="password" class="input" placeholder="8 caracteres minimum" />
+                    </div>
+                    <ErrorMessage name="mdp" class="help is-danger" />
+                  </div>
+                </div>
+                <div class="">
+                  <button class="button is-info" :disabled="loading">
+                    Sign Up
+                  </button>
+                </div>
+
+              </Form>
+              <div v-if="message" class="alert" :class="successful ? 'alert-success' : 'alert-danger'">
+                {{ message }}
+              </div>
+
+              <span>Déjà inscrit ? <router-link to="/login">Se connecter</router-link> </span>
+            </div>
+
           </div>
-          <ErrorMessage name="mdp" class="help is-danger" />
         </div>
       </div>
-      <div class="">
-        <button class="button is-info" :disabled="loading">
-          Sign Up
-        </button>
-      </div>
-
-    </Form>
-    <div v-if="message" class="alert" :class="successful ? 'alert-success' : 'alert-danger'">
-      {{ message }}
     </div>
-
-    <span>Déjà inscrit ? <router-link to="/login">Se connecter</router-link> </span>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -59,13 +71,13 @@ export default {
       message: '',
       schema: yup.object().shape({
         pseudo: yup.string()
-                    .required("Le pseudo est requis !")
-                    .min(5, "Le Pseudo doit avoir au moins 5 caractères !")
-                    .max(20, "Le Pseudo ne doit pas dépasser 20 caractères !"),
+          .required("Le pseudo est requis !")
+          .min(5, "Le Pseudo doit avoir au moins 5 caractères !")
+          .max(20, "Le Pseudo ne doit pas dépasser 20 caractères !"),
         mdp: yup.string()
-                    .required("Le mot de passe est requis !")
-                    .min(8, "Le mot de passe doit avoir au moins 8 caractères !")
-                    .max(20, "Le mot de passe ne doit pas dépasser 20 caractères !"), 
+          .required("Le mot de passe est requis !")
+          .min(8, "Le mot de passe doit avoir au moins 8 caractères !")
+          .max(20, "Le mot de passe ne doit pas dépasser 20 caractères !"),
       }),
     };
   },
@@ -107,3 +119,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.custom-box {
+  box-shadow: blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 10px -10px 0px -3px, rgb(31, 193, 27) 10px -10px, rgb(255, 255, 255) 20px -20px 0px -3px, rgb(255, 217, 19) 20px -20px, rgb(255, 255, 255) 30px -30px 0px -3px, rgb(255, 156, 85) 30px -30px, rgb(255, 255, 255) 40px -40px 0px -3px, rgb(255, 85, 85) 40px -40px;
+}
+</style>

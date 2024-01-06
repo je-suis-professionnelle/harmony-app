@@ -1,20 +1,20 @@
 <template>
-    <article class="panel is-primary">
+    <article class="panel is-primary m-5">
         <p class="panel-heading">
             Vos groupes
         </p>
         <div class="panel-block">
             <p class="control has-icons-left">
-                <input class="input is-primary" type="text" placeholder="Search">
+                <input v-model="search" class="input is-primary" type="text" placeholder="Chercher">
                 <span class="icon is-left">
                     <i class="fas fa-search" aria-hidden="true"></i>
                 </span>
             </p>
             <div>
-                <button class="button is-primary" @click="ouvrirModal">Créer un groupe</button>
+                <button class="button is-primary ml-1" @click="ouvrirModal">Créer un groupe</button>
             </div>
         </div>
-        <GroupeItem v-for="groupe in groupes" :key=groupe.identifiant :groupe="groupe" />
+        <GroupeItem v-for="groupe in this.groupesFiltered" :key=groupe.identifiant :groupe="groupe" />
         <CreationGroupe ref="creationGroupeModal" @groupCreated="getGroupes" />
     </article>
 </template>
@@ -38,6 +38,7 @@ export default {
     },
     data() {
         return {
+            search: '',
             loggedInUserPseudo: '',
             groupes: [], // Liste des groupes récupérée du serveur
             creationGroupeModal: null, // Ajoute une référence à la modal
@@ -46,7 +47,13 @@ export default {
     computed: {
         loggedIn() {
             return this.$store.state.auth.status.loggedIn;
-        }
+        },
+        groupesFiltered() {
+            return this.groupes.filter(group => {
+                console.log("filteredGroupes : ", filteredGroupes);
+                return group.title.toLowerCase().includes(this.search.toLowerCase())
+            })
+        },
     },
     mounted() {
         if (!this.loggedIn) {
@@ -58,9 +65,6 @@ export default {
             alert("Vous n'êtes pas connecté");
         }
         this.getGroupes();
-        console.log("groupes : ", this.groupes);
-    },
-    created() {
     },
     methods: {
 

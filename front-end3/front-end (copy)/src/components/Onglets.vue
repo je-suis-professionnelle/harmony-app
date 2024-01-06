@@ -21,38 +21,56 @@
       </li>
     </ul>
   </div>
+
   <div class="tab-contents">
+
     <div class="content" v-bind:class="{ 'is-active': isActive == 'expenses' }">
-      <DepenseItem v-for="depense in this.expenses" :key="depense.identifiant" :depense="depense" />
+      <DepenseItem v-for="depense in this.expenses" :key="depense.identifiant"
+        @click="ouvrirSuppressionDepenseModal(depense)" :depense="depense" />
     </div>
+
     <div class="content" v-bind:class="{ 'is-active': isActive == 'balance' }">
-      <BalanceItem v-for="totalByMember in this.totalByMember"
+      <BalanceItem v-for="totalByMember in this.totalByMember" 
         :member="totalByMember[0]"
-        :totalForMember="totalByMember[1]"
-        :division="this.division"
-        :balance="calculateBalance(totalByMember[1])"/>
+        :totalForMember="totalByMember[1]" 
+        :division="this.division" 
+        :balance="calculateBalance(totalByMember[1])" 
+      />
     </div>
+
     <div class="content" v-bind:class="{ 'is-active': isActive == 'equilibre' }">
-      <EquilibreItem />
+      <EquilibreItem v-for="debtByMember in this.equilibres" 
+      :member="debtByMember.from" 
+      :debtForMember="debtByMember.debt"
+      :memberReceiving="debtByMember.to"/>
     </div>
+
   </div>
+
+  <SuppressionDepense ref="suppressionDepenseModal" @expenseDeleted="expenseDeletedHandler" :depense="clickedExpense" />
 </template>
 
 <script>
-
+import SuppressionDepense from "../components/SuppressionDepense.vue";
 import DepenseItem from "../components/DepenseItem.vue";
 import BalanceItem from "../components/BalanceItem.vue";
+import EquilibreItem from "../components/EquilibreItem.vue";
+
 export default {
 
   components: {
+    SuppressionDepense,
     DepenseItem,
-    BalanceItem
+    BalanceItem,
+    EquilibreItem
   },
 
   name: "Onglets",
 
+  emits: ['expenseDeletedP'],
+
   props: {
-        expenses: {
+    expenses: {
       type: Array,
       required: true
     },
@@ -72,24 +90,34 @@ export default {
       type: Number,
       required: true
     },
+    equilibres: {
+      type: Array,
+      required: true
+    }
   },
 
   data() {
     return {
       isActive: 'expenses',
       balanceItems: [],
-      
+      clickedExpense: null,
     };
-  },
-
-  mounted() {
-    console.log(this.expenses);
   },
 
   methods: {
     calculateBalance(totalForMember) {
+      console.log("equilibrage", this.equilibres);
+      console.log("totalByMember", this.totalByMember);
       return totalForMember - this.division;
     },
+    ouvrirSuppressionDepenseModal(depense) {
+      this.clickedExpense = depense;
+      this.$refs.suppressionDepenseModal.ouvrirModal();
+    },
+    expenseDeletedHandler() {
+      this.$emit('expenseDeletedP');
+      console.log("expenseDeletedHandler");
+    }
   }
 };
 
