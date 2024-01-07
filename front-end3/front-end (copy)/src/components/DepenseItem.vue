@@ -13,7 +13,7 @@
                 {{ depense.description }}
             </div>
             <div class="column">
-                {{ depense.amount }}
+                {{ depense.amount }}€
             </div>
             <div>
                 <button class="button is-primary" @click="ouvrirModal">Supprimer</button>

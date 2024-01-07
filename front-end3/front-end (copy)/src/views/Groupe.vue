@@ -20,12 +20,9 @@
                                 <a class="navbar-item" @click="ouvrirSuppressionMembre">
                                     Retirer un membre
                                 </a>
-                                <a class="navbar-item" @click="ouvrirSuppressionGroupe">
-                                    Supprimer le groupe
-                                </a>
                                 <hr class="navbar-divider">
-                                <a class="navbar-item">
-                                    Report an issue
+                                <a class="navbar-item" @click="ouvrirSuppressionGroupe" style="color:red;">
+                                    Supprimer le groupe
                                 </a>
                             </div>
                         </div>
@@ -36,7 +33,7 @@
 
         <div class="panel-block">
             <p class="control has-icons-left">
-                <input class="input is-primary" type="text" placeholder="Search">
+                <input v-model="search" class="input is-primary" type="text" placeholder="Chercher">
                 <span class="icon is-left">
                     <i class="fas fa-search" aria-hidden="true"></i>
                 </span>
@@ -46,13 +43,9 @@
             </div>
         </div>
 
-        <Onglets @expenseDeletedP="getDepenses" 
-            :total="this.total" 
-            :expenses='this.depenses' 
-            :division="this.division"
-            :myTotal="this.myTotal" 
-            :totalByMember="this.totalByMember" 
-            :equilibres="this.equilibres"/>
+        <Onglets @expenseDeletedP="this.expensesFiltered" :total="this.total" :expenses='this.expensesFiltered'
+            :division="this.division" :myTotal="this.myTotal" :totalByMember="this.totalByMember"
+            :equilibres="this.equilibres" />
 
         <Resultat :total="this.total" :myTotal="this.myTotal" :division="this.division" />
 
@@ -60,9 +53,11 @@
 
         <AjouterMembre ref="ajoutMembreModal" :groupId=this.groupId />
 
-        <RetirerMembre ref="suppressionMembreModal" :groupId=this.groupId :memberList="this.memberList"/>
+        <RetirerMembre ref="suppressionMembreModal" :groupId=this.groupId :memberList="this.memberList" />
 
         <SuppressionGroupe ref="suppressionGroupeModal" :groupId=this.groupId />
+
+        <AjoutLabelDepense ref="AjoutLabelModal" :groupId=this.groupId />
 
     </nav>
 </template>
@@ -115,7 +110,24 @@ export default {
             division: 0,
             memberList: [],
             equilibres: [],
+            search: '',
         };
+    },
+    computed: {
+        expensesFiltered() {
+
+            if (!this.depenses || !this.depenses.length) {
+                return [];
+            }
+
+            if (!this.search) {
+                return this.depenses;
+            }
+
+            return this.depenses.filter(depense => 
+                depense.pseudo.toLowerCase().includes(this.search.toLowerCase())
+            );
+        }
     },
     created() {
         console.log("groupid created", this.groupId);
@@ -148,7 +160,6 @@ export default {
 
         getDepenses() {
             this.getNbMembers();
-            this.loading = true;
             const token = this.$store.state.auth.user.accessToken;
 
             let config = {
@@ -166,8 +177,9 @@ export default {
                     this.depenses.forEach(expense => {
                         this.totalByMember.set(expense.pseudo, (this.totalByMember.get(expense.pseudo) || 0) + expense.amount);
                     });
-
-                    this.loading = false;
+                    this.$nextTick(() => {
+                        this.$forceUpdate();
+                    });
                     this.total = this.depenses.reduce((acc, expense) => acc + expense.amount, 0);
                     this.myTotal = this.depenses.reduce((acc, expense) => (this.loggedInUserPseudo == expense.pseudo ? acc + expense.amount : acc), 0);
                     this.division = this.total / this.nbMembers;
