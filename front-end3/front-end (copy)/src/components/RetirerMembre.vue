@@ -10,12 +10,23 @@
             <section class="modal-card-body">
 
                 <Form :validation-schema="schema">
-                    <div class="field">
+                    <!-- <div class="field">
                         <label class="label">Pseudo</label>
                         <Field v-model="pseudo" name="pseudo" type="text" class="input"
                             placeholder="Pseudo du membre à ajouter" />
                         <ErrorMessage name="pseudo" />
                         <p v-if="errorMessage" class="help is-danger">{{ errorMessage }}</p>
+                    </div> -->
+                    <div class="field">
+                        <label class="label">Pseudo</label>
+                        <div class="control">
+                            <select v-model="pseudo" name="pseudo">
+                                <option v-for="pseudo in this.memberList" v-bind:value="pseudo">
+                                    {{ pseudo }}
+                                </option>
+                            </select>
+                        </div>
+                        <ErrorMessage name="title" />
                     </div>
                 </Form>
             </section>
@@ -44,6 +55,11 @@ export default {
             type: Number,
             required: true,
         },
+        memberList: {
+            type: Array,
+            required: true,
+            default: null
+        },
     },
     data() {
         return {
@@ -52,7 +68,8 @@ export default {
             successful: false,
             loading: false,
             message: '',
-            // schema: yup.object().shape({
+            selected: this.memberList == null ? "" : this.memberList[0],
+            // / schema: yup.object().shape({
             //     title: yup.string()
             //         .required("Le titre est requis !")
             //         .min(5, "Le titre doit avoir au moins 5 caractères !")
@@ -85,7 +102,11 @@ export default {
             axios.delete('http://localhost:8080/groupUser', config)
                 .then(response => {
                     console.log("response", response);
-                    this.fermerModal();
+                    if (this.pseudo == this.$store.state.auth.user.username) {
+                        this.$router.push({ name: 'Groupes' });
+                    } else {
+                        this.fermerModal();
+                    }
                 })
                 .catch(error => {
                     console.error("Erreur lors de la requête :", error);

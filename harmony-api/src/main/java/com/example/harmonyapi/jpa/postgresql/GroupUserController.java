@@ -45,6 +45,10 @@ public class GroupUserController {
                 return new ResponseEntity<>(null, HttpStatus.CONFLICT);
             }
 
+            if(userDoesntExist(groupUser.getPseudoUser())) {
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }
+
             GroupUser savedGroupUser = groupUserRepository.save(groupUser);
             return new ResponseEntity<>(savedGroupUser, HttpStatus.CREATED);
         } catch (Exception e) {

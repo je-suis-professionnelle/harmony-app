@@ -95,7 +95,9 @@ export default {
                 .catch(error => {
                     console.error("Erreur lors de la requête :", error);
                     if (error.response && error.response.status === 409) {
-                        this.errorMessage = "Le membre appartient déjà à ce groupe";
+                        this.errorMessage = "Le membre appartient déjà à ce groupe.";
+                    } else if (error.response && error.response.status === 404) {
+                        this.errorMessage = "Le membre ne possède pas de compte.";
                     }
                 });
         }

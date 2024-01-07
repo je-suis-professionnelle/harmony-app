@@ -60,7 +60,7 @@
 
         <AjouterMembre ref="ajoutMembreModal" :groupId=this.groupId />
 
-        <RetirerMembre ref="suppressionMembreModal" :groupId=this.groupId />
+        <RetirerMembre ref="suppressionMembreModal" :groupId=this.groupId :memberList="this.memberList"/>
 
         <SuppressionGroupe ref="suppressionGroupeModal" :groupId=this.groupId />
 
@@ -121,7 +121,6 @@ export default {
         console.log("groupid created", this.groupId);
         this.getDepenses();
 
-        // Convertir groupId en nombre
         const groupIdNumber = Number(this.groupId);
     },
     methods: {
