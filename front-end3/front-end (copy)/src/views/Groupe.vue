@@ -55,7 +55,7 @@
 
         <Resultat :total="this.total" :myTotal="this.myTotal" :division="this.division" />
 
-        <CreationDepense ref="creationDepenseModal" @expenseCreated="getDepenses" :groupId=this.groupId />
+        <CreationDepense ref="creationDepenseModal" @expenseCreated="getDepenses" :groupId=this.groupId :labelsList="this.labelsList"/>
 
         <AjouterMembre ref="ajoutMembreModal" :groupId=this.groupId />
 

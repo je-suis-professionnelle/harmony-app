@@ -33,7 +33,7 @@ public class LabelController {
     @PostMapping("/label")
     public ResponseEntity<Label> createLabel(@RequestBody Label label) {
         try {
-            if(labelRepository.existsById(label.getName())) {
+            if(labelRepository.existsByNameAndIdGroup(label.getName(), label.getIdGroup())) {
                 return new ResponseEntity<>(null, HttpStatus.CONFLICT);
             }
             Label savedLabel = labelRepository.save(label);

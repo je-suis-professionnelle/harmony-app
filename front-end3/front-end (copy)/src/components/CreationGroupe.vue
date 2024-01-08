@@ -19,10 +19,8 @@
                         </div>
                         <ErrorMessage name="title" class="help is-danger" />
                     </div>
-
-                    <!-- ajouter des participants -->
-                    <!-- <button class="button is-success">Sauvegarder</button> -->
                 </Form>
+                
             </section>
             <footer class="modal-card-foot">
                 <!-- Boutons ou autres éléments de pied de modal -->
@@ -107,6 +105,22 @@ export default {
                 this.message = response.data.message;
                 this.successful = true;
                 this.loading = false;
+
+                console.log("groupid", response.data.identifiant);
+
+                this.createLabel({
+                    name: "Restaurant",
+                    idGroup: response.data.identifiant,
+                });
+                this.createLabel({
+                    name: "Hotel",
+                    idGroup: response.data.identifiant,
+                });
+                this.createLabel({
+                    name: "Loisir",
+                    idGroup: response.data.identifiant,
+                });
+
                 this.fermerModal();
                 this.$emit('groupCreated');
             } catch (error) {
@@ -123,6 +137,27 @@ export default {
                 this.successful = false;
                 this.loading = false;
                 console.log(this.message);
+            }
+        },
+
+        async createLabel(label) {
+            const token = this.$store.state.auth.user.accessToken;
+
+            const headers = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            };
+
+            try {
+                await axios.post("http://localhost:8080/label", label, headers);
+                console.log("label créé");
+                this.$emit("labelCreated");
+                this.fermerModal();
+            } catch (error) {
+                if (error.response && error.response.status === 409) {
+                    this.errorMessage = "Le label existe déjà.";
+                }
             }
         },
     },

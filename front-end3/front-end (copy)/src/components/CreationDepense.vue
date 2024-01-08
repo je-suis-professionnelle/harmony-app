@@ -7,36 +7,39 @@
                 <p class="modal-card-title">Créer une dépense</p>
                 <button class="delete" aria-label="close" @click="fermerModal"></button>
             </header>
-            <section class="modal-card-body">
 
-                <Form :validation-schema="schema">
+            <Form ref="form" :validation-schema="schema" @submit="handleSubmit">
+                <section class="modal-card-body">
                     <div class="field">
                         <label class="label">Label</label>
                         <div class="control">
-                            <select v-model="expenseData.label" name="label">
-                                <option>Restaurant</option>
-                                <option>Hotel</option>
-                                <option>Loisir</option>
-                            </select>
+                            <Field v-model="expenseData.label" name="label" as="select">
+            <option v-for="label in this.labelsList" :value="label.name">
+                {{ label.name }}
+            </option>
+        </Field>
                         </div>
-                        <ErrorMessage name="title" />
+                        <ErrorMessage class="help is-danger" name="label" />
                     </div>
                     <div class="field">
                         <label class="label">Montant</label>
-                        <Field v-model="expenseData.amount" name="amount" type="number" class="input" placeholder="Montant de la dépense" />
-                        <ErrorMessage name="amount" />
+                        <Field v-model="expenseData.amount" name="amount" type="number" class="input" min="0.01"
+                            placeholder="Montant de la dépense" />
+                        <ErrorMessage class="help is-danger" name="amount" />
                     </div>
                     <div class="field">
                         <label class="label">Description</label>
-                        <Field v-model="expenseData.description" name="description" type="text" class="input" placeholder="Description de la dépense" />
-                        <ErrorMessage name="description" />
+                        <Field v-model="expenseData.description" name="description" type="text" class="input"
+                            placeholder="Description de la dépense" />
+                        <ErrorMessage class="help is-danger" name="description" />
                     </div>
-                </Form>
-            </section>
-            <footer class="modal-card-foot">
-                <button type="submit" class="button is-success" @click="createExpense">Sauvegarder</button>
-                <button class="button" @click="fermerModal">Annuler</button>
-            </footer>
+
+                </section>
+                <footer class="modal-card-foot">
+                    <button type="submit" class="button is-success">Sauvegarder</button>
+                    <button class="button" @click="fermerModal">Annuler</button>
+                </footer>
+            </Form>
         </div>
     </div>
 </template>
@@ -58,39 +61,53 @@ export default {
             type: Number,
             required: true,
         },
+        labelsList: {
+            type: Array,
+            required: true,
+        }
     },
     data() {
         return {
-            visible: false, // Initialiser la modal comme non visible
+            visible: false,
             loggedInUserPseudo: '',
             successful: false,
             loading: false,
             message: '',
-            // schema: yup.object().shape({
-            //     title: yup.string()
-            //         .required("Le titre est requis !")
-            //         .min(5, "Le titre doit avoir au moins 5 caractères !")
-            //         .max(50, "Le titre ne doit pas dépasser 50 caractères !"),
-            // }),
+            schema: yup.object().shape({
+                label: yup.string().required("Le champ Label est requis."),
+                amount: yup.number()
+                    .typeError('Le montant doit être un nombre.')
+                    .min(0.01, "Le montant doit être supérieur ou égal à un centime.")
+                    .required("Le champ Montant est requis."),
+                description: yup.string().max(50, "La description ne doit pas dépasser 50 caractères."),
+            }),
             expenseData: {
                 pseudo: '',
                 idGroup: 0,
                 timestamp: '',
                 label: '',
-                amount: '',
+                amount: 0.01,
                 description: '',
             },
+            label: null,
         };
     },
-    created() {
 
-    },
     methods: {
         ouvrirModal() {
             this.visible = true;
         },
         fermerModal() {
             this.visible = false;
+        },
+
+        async handleSubmit() {
+
+            await this.$refs.form.validate();
+
+            if (!this.$refs.form.errors) {
+                this.createExpense();
+            }
         },
 
         async createExpense() {
@@ -107,7 +124,6 @@ export default {
 
             const token = this.$store.state.auth.user.accessToken;
 
-            // Configure les headers avec le token JWT
             const headers = {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -116,9 +132,7 @@ export default {
 
             try {
                 console.log("dans try");
-                // Utilisation d'Axios pour effectuer la requête POST
                 const response = await axios.post("http://localhost:8080/expenses", this.expenseData, headers);
-                // Traitement de la réponse
                 this.message = response.data.message;
                 this.successful = true;
                 this.loading = false;
@@ -128,7 +142,6 @@ export default {
                 console.log("dans catch", error.response);
                 console.error("Erreur détaillée :", error.response.data);
                 console.log("catch :", error);
-                // Gestion des erreurs
                 this.message =
                     (error.response &&
                         error.response.data &&

@@ -8,7 +8,7 @@
                 <button class="delete" aria-label="close" @click="fermerModal"></button>
             </header>
 
-            <Form ref="form" :validation-schema="schema" @submit="handleSubmit">
+            <Form ref="form" @submit="handleSubmit">
                 <section class="modal-card-body">
                     <div class="field">
                         <label class="label">Label</label>

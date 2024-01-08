@@ -8,4 +8,6 @@ import java.util.List;
 public interface LabelRepository extends JpaRepository<Label, String> {
 
     List<Label> findByIdGroup(long idGroup);
+
+    boolean existsByNameAndIdGroup(String name, long idGroup);
 }
