@@ -20,6 +20,12 @@
                                 <a class="navbar-item" @click="ouvrirSuppressionMembre">
                                     Retirer un membre
                                 </a>
+                                <a class="navbar-item" @click="ouvrirAjouterLabelDepense">
+                                    Ajouter un label de dépense
+                                </a>
+                                <a class="navbar-item" @click="ouvrirSuppressionLabel">
+                                    Supprimer un label de dépense
+                                </a>
                                 <hr class="navbar-divider">
                                 <a class="navbar-item" @click="ouvrirSuppressionGroupe" style="color:red;">
                                     Supprimer le groupe
@@ -44,8 +50,8 @@
         </div>
 
         <Onglets @expenseDeletedP="this.expensesFiltered" :total="this.total" :expenses='this.expensesFiltered'
-            :division="this.division" :myTotal="this.myTotal" :totalByMember="this.totalByMember"
-            :equilibres="this.equilibres" />
+            :division="this.division" :myTotal="this.myTotal" :totalByMember="this.filteredTotalByMember"
+            :equilibres="this.filteredEquilibres" />
 
         <Resultat :total="this.total" :myTotal="this.myTotal" :division="this.division" />
 
@@ -57,7 +63,9 @@
 
         <SuppressionGroupe ref="suppressionGroupeModal" :groupId=this.groupId />
 
-        <AjoutLabelDepense ref="AjoutLabelModal" :groupId=this.groupId />
+        <AjoutLabelDepense ref="ajoutLabelModal" @labelCreated="this.getLabels" :groupId=this.groupId />
+
+        <SuppressionLabel ref="suppressionLabelModal" @labelRemoved="this.getLabels" :groupId=this.groupId :labelsList="this.labelsList"/>
 
     </nav>
 </template>
@@ -74,7 +82,11 @@ import CreationDepense from '../components/CreationDepense.vue'
 import AjouterMembre from '../components/AjouterMembre.vue'
 import RetirerMembre from '../components/RetirerMembre.vue'
 import SuppressionGroupe from '../components/SuppressionGroupe.vue'
+import AjoutLabelDepense from '@/components/AjoutLabelDepense.vue'
+import SuppressionLabel from "@/components/SuppressionLabel.vue";
+
 import { RouterLink } from "vue-router";
+
 export default {
     name: 'Groupe',
     props: {
@@ -95,7 +107,9 @@ export default {
         RetirerMembre,
         SuppressionGroupe,
         RouterLink,
-        Resultat
+        Resultat,
+        AjoutLabelDepense,
+        SuppressionLabel,
     },
     data() {
         return {
@@ -111,6 +125,7 @@ export default {
             memberList: [],
             equilibres: [],
             search: '',
+            labelsList: [],
         };
     },
     computed: {
@@ -124,15 +139,36 @@ export default {
                 return this.depenses;
             }
 
-            return this.depenses.filter(depense => 
+            return this.depenses.filter(depense =>
                 depense.pseudo.toLowerCase().includes(this.search.toLowerCase())
             );
-        }
+        },
+        filteredTotalByMember() {
+            if (!this.search) {
+                return this.totalByMember;
+            }
+            let filteredMap = new Map();
+            for (let [key, value] of this.totalByMember) {
+                if (key.toLowerCase().includes(this.search.toLowerCase())) {
+                    filteredMap.set(key, value);
+                }
+            }
+            return filteredMap;
+        },
+        filteredEquilibres() {
+            if (!this.search) {
+                return this.equilibres;
+            }
+            return this.equilibres.filter(equilibre =>
+                equilibre.from.toLowerCase().includes(this.search.toLowerCase()) ||
+                equilibre.to.toLowerCase().includes(this.search.toLowerCase())
+            );
+        },
     },
     created() {
         console.log("groupid created", this.groupId);
         this.getDepenses();
-
+        this.getLabels();
         const groupIdNumber = Number(this.groupId);
     },
     methods: {
@@ -182,7 +218,11 @@ export default {
                     });
                     this.total = this.depenses.reduce((acc, expense) => acc + expense.amount, 0);
                     this.myTotal = this.depenses.reduce((acc, expense) => (this.loggedInUserPseudo == expense.pseudo ? acc + expense.amount : acc), 0);
-                    this.division = this.total / this.nbMembers;
+                    if (this.nbMembers > 0) {
+                        this.division = (this.total / this.nbMembers).toFixed(2); // Arrondit à 2 décimales
+                    } else {
+                        this.division = 0; // Ou une valeur par défaut en cas de division par zéro
+                    }
                     this.calculerEquilibres();
                 })
                 .catch(error => {
@@ -212,6 +252,26 @@ export default {
             });
         },
 
+        getLabels() {
+            const token = this.$store.state.auth.user.accessToken;
+
+            let config = {
+                headers: { 'Authorization': 'Bearer ' + token },
+                params: {
+                    idGroup: this.groupId
+                },
+            }
+
+            axios.get('http://localhost:8080/labels', config)
+                .then(response => {
+                    console.log("response", response);
+                    this.labelsList = response.data;
+                })
+                .catch(error => {
+                    console.error("Erreur lors de la requête :", error);
+                });
+        },
+
         ouvrirModal() {
             // Utilise la référence pour ouvrir la modal
             this.$refs.creationDepenseModal.ouvrirModal();
@@ -227,6 +287,14 @@ export default {
         ouvrirSuppressionGroupe() {
             // Utilise la référence pour ouvrir la modal
             this.$refs.suppressionGroupeModal.ouvrirModal();
+        },
+        ouvrirAjouterLabelDepense() {
+            // Utilise la référence pour ouvrir la modal
+            this.$refs.ajoutLabelModal.ouvrirModal();
+        },
+        ouvrirSuppressionLabel() {
+            // Utilise la référence pour ouvrir la modal
+            this.$refs.suppressionLabelModal.ouvrirModal();
         },
     },
 };
