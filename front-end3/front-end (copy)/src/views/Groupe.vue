@@ -49,7 +49,7 @@
             </div>
         </div>
 
-        <Onglets @expenseDeletedP="this.expensesFiltered" :total="this.total" :expenses='this.expensesFiltered'
+        <Onglets @expenseDeletedP="getDepenses" :total="this.total" :expenses='this.expensesFiltered'
             :division="this.division" :myTotal="this.myTotal" :totalByMember="this.filteredTotalByMember"
             :equilibres="this.filteredEquilibres" />
 
@@ -169,7 +169,6 @@ export default {
         console.log("groupid created", this.groupId);
         this.getDepenses();
         this.getLabels();
-        const groupIdNumber = Number(this.groupId);
     },
     methods: {
         getNbMembers() {
