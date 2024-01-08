@@ -71,10 +71,10 @@ export default {
         },
 
         async handleSubmit() {
-            await this.$refs.form.validate(); // Valide le formulaire
+            await this.$refs.form.validate(); 
 
-            if (!this.$refs.form.errors) { // Vérifie s'il n'y a pas d'erreurs de validation
-                this.createLabel(); // Si le formulaire est valide, crée le label
+            if (!this.$refs.form.errors) {
+                this.createLabel(); 
             }
         },
 

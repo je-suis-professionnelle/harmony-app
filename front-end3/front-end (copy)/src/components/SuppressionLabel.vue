@@ -7,9 +7,9 @@
                 <p class="modal-card-title">Retirer un label de dépense</p>
                 <button class="delete" aria-label="close" @click="fermerModal"></button>
             </header>
-            <section class="modal-card-body">
 
-                <Form ref="form" :validation-schema="schema">
+            <Form ref="form" :validation-schema="schema" @submit="handleSubmit">
+                <section class="modal-card-body">
                     <div class="field">
                         <label class="label">Label</label>
                         <div class="control">
@@ -19,27 +19,29 @@
                                 </option>
                             </select>
                         </div>
+                        <ErrorMessage class="help is-danger" name="label" />
                         <p class="help is-danger">{{ errorMessage }}</p>
                     </div>
-                </Form>
-            </section>
-            <footer class="modal-card-foot">
-                <button type="submit" class="button is-success" @click="removeLabel">Retirer</button>
-                <button class="button" @click="fermerModal">Annuler</button>
-            </footer>
+                </section>
+                <footer class="modal-card-foot">
+                    <button type="submit" class="button is-success">Retirer</button>
+                    <button class="button" @click="fermerModal">Annuler</button>
+                </footer>
+            </Form>
+
         </div>
     </div>
 </template>
 
 <script>
 import axios from "axios";
-import { Field, Form } from "vee-validate";
+import { ErrorMessage, Form } from "vee-validate";
 
 export default {
     name: 'SuppressionLabel',
     components: {
         Form,
-        Field,
+        ErrorMessage,
     },
     props: {
         groupId: {
@@ -54,20 +56,28 @@ export default {
     data() {
         return {
             label: null,
-            visible: false, // Initialiser la modal comme non visible
-            selected: this.labelsList == null ? "" : this.labelsList[0],
+            visible: false,
             errorMessage: '',
+            selected: this.labelsList == null ? "" : this.labelsList[0],
         };
     },
-    created() {
-        // this.getLabels();
-    },
     methods: {
+        
         ouvrirModal() {
             this.visible = true;
         },
+
         fermerModal() {
             this.visible = false;
+        },
+
+        async handleSubmit() {
+            await this.$refs.form.validate();
+            console.log("handleSubmit", this.selected);
+
+            if (!this.$refs.form.errors) {
+                this.removeLabel();
+            }
         },
 
         removeLabel() {
@@ -83,7 +93,7 @@ export default {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
-                data: label  // Utilisez la propriété 'data' pour envoyer les données de la requête DELETE
+                data: label
             };
 
             axios.delete('http://localhost:8080/label', config)
