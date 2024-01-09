@@ -32,13 +32,9 @@ public class ExpenseId implements Serializable {
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof ExpenseId)) {
+        if (!(obj instanceof ExpenseId expenseId)) {
             return false;
         }
-        ExpenseId expenseId = (ExpenseId) obj;
-        if (expenseId.pseudo.equals(this.pseudo) && expenseId.timestamp == this.timestamp && this.idGroup == expenseId.idGroup) {
-            return true;
-        }
-        return false;
+        return expenseId.pseudo.equals(this.pseudo) && expenseId.timestamp == this.timestamp && this.idGroup == expenseId.idGroup;
     }
 }

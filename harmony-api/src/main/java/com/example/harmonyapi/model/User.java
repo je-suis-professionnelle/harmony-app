@@ -9,14 +9,6 @@ import java.util.List;
 @Table(name = "users")
 public class User {
 
-    /*@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "identifiant")
-    private long identifiant;*/
-
-    // @OneToMany(mappedBy = "user")
-    // private List<GroupUser> groupUsers;
-
     @Id
     @Column(name = "pseudo")
     private String pseudo;

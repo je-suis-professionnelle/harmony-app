@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "*")/* ça marche ce truc ??*/
 @RestController
@@ -27,16 +26,6 @@ public class GroupController {
     private UserRepository userRepository;
     @Autowired
     private GroupUserRepository groupUserRepository;
-
-    @CrossOrigin(origins = "*")/* ça marche ce truc ??*/
-    @RequestMapping(
-            value = "/**",
-            method = RequestMethod.OPTIONS
-    )
-    public ResponseEntity handle() {
-        System.out.println("handle OPTIONS");
-        return new ResponseEntity(HttpStatus.OK);
-    }
 
     @GetMapping()
     public ResponseEntity<List<Group>> getGroups() {
@@ -95,21 +84,4 @@ public class GroupController {
             return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    /*
-    @PostMapping("/groups")
-    public ResponseEntity<Group> createGroup(@RequestBody Group group) {
-        try {
-            Group savedGroup = groupRepository.save(group);
-
-            User owner = userRepository.findByPseudo(group.getPseudoOwner()).orElseThrow(() -> new Exception("Owner not found"));
-            GroupUser groupUser = new GroupUser(savedGroup, owner);
-            groupUserRepository.save(groupUser);
-
-            return new ResponseEntity<>(savedGroup, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    */
 }
