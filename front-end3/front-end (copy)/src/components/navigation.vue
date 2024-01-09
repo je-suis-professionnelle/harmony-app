@@ -2,9 +2,7 @@
   <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link class="navbar-item" style="max-height: 128px;" to="/accueil">
-        <!-- <figure class="image" > -->
           <img src="@/assets/logo2.png"  style="max-height: 80px;">
-        <!-- </figure> -->
         <p class="navbar-item" style="color: white;">HARMONY</p>
       </router-link>
       <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -52,7 +50,6 @@
             <div v-if="this.$store.state.auth.status.loggedIn" class="button is-light" @click="logout">
               Se déconnecter
             </div>
-            <!-- ou afficher le profil hihi -->
           </div>
         </div>
       </div>
@@ -62,9 +59,6 @@
 
 <script>
 export default {
-  data() {
-    return {}
-  },
   mounted() {
     this.initializeNavbarBurger();
   },
@@ -74,17 +68,13 @@ export default {
       this.$router.push('/login')
     },
     initializeNavbarBurger() {
-      // Get all "navbar-burger" elements
       const navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
 
-      // Add a click event on each of them
       navbarBurgers.forEach(el => {
         el.addEventListener('click', () => {
-          // Get the target from the "data-target" attribute
           const target = el.dataset.target;
           const $target = document.getElementById(target);
 
-          // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
           el.classList.toggle('is-active');
           $target.classList.toggle('is-active');
         });
@@ -93,7 +83,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-/* Vos styles spécifiques à ce composant, s'ils sont nécessaires */
-</style>

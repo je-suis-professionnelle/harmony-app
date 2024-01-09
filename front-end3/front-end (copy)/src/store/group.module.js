@@ -1,5 +1,3 @@
-// store.js
-
 import axios from 'axios';
 import Groupe from '../models/group.js';
 

@@ -61,13 +61,5 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {};
-  },
-  methods: {},
 };
 </script>
-
-<style scoped>
-/* Add your component-specific styles here */
-</style>

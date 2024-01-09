@@ -15,8 +15,5 @@ export default {
             this.$router.push({ name: 'Groupe', params: { groupId: this.groupe.identifiant, title: this.groupe.title } });
         }
     },
-    data() {
-        return {};
-    },
 };
 </script>

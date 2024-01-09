@@ -20,10 +20,9 @@
                         <ErrorMessage name="title" class="help is-danger" />
                     </div>
                 </Form>
-                
+
             </section>
             <footer class="modal-card-foot">
-                <!-- Boutons ou autres éléments de pied de modal -->
                 <button type="submit" class="button is-success" @click="createGroup">Sauvegarder</button>
                 <button class="button" @click="fermerModal">Annuler</button>
             </footer>
@@ -43,16 +42,10 @@ export default {
         Field,
         ErrorMessage,
     },
-    props: {
-
-    },
     data() {
         return {
-            visible: false, // Initialiser la modal comme non visible
+            visible: false,
             loggedInUserPseudo: '',
-            successful: false,
-            loading: false,
-            message: '',
             schema: yup.object().shape({
                 title: yup.string()
                     .required("Le titre est requis !")
@@ -92,7 +85,6 @@ export default {
                 console.log("titre", this.groupData.title);
                 const token = this.$store.state.auth.user.accessToken;
 
-                // Configure les headers avec le token JWT
                 const headers = {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -127,16 +119,6 @@ export default {
                 console.error("Erreur lors de la récupération des groupes :", error);
                 console.error("Erreur détaillée :", error.response.data);
                 console.log("catch :", error);
-                // Gestion des erreurs
-                this.message =
-                    (error.response &&
-                        error.response.data &&
-                        error.response.data.message) ||
-                    error.message ||
-                    error.toString();
-                this.successful = false;
-                this.loading = false;
-                console.log(this.message);
             }
         },
 

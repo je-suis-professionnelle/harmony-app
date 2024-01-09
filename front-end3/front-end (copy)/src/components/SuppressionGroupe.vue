@@ -17,16 +17,9 @@
 
 <script>
 import axios from "axios";
-import { Field, ErrorMessage, Form } from "vee-validate";
-import * as yup from "yup";
 
 export default {
     name: 'SuppressionGroupe',
-    components: {
-        Form,
-        Field,
-        ErrorMessage,
-    },
     props: {
         groupId: {
             type: Number,
@@ -35,17 +28,7 @@ export default {
     },
     data() {
         return {
-            visible: false, // Initialiser la modal comme non visible
-            loggedInUserPseudo: '',
-            successful: false,
-            loading: false,
-            message: '',
-            // schema: yup.object().shape({
-            //     title: yup.string()
-            //         .required("Le titre est requis !")
-            //         .min(5, "Le titre doit avoir au moins 5 caractères !")
-            //         .max(50, "Le titre ne doit pas dépasser 50 caractères !"),
-            // }),
+            visible: false,
         };
     },
     methods: {

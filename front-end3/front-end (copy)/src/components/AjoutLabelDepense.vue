@@ -71,10 +71,10 @@ export default {
         },
 
         async handleSubmit() {
-            await this.$refs.form.validate(); 
+            await this.$refs.form.validate();
 
             if (!this.$refs.form.errors) {
-                this.createLabel(); 
+                this.createLabel();
             }
         },
 

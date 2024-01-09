@@ -62,7 +62,7 @@ export default {
         };
     },
     methods: {
-        
+
         ouvrirModal() {
             this.visible = true;
         },

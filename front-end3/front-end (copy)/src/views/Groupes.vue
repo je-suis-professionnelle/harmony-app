@@ -40,8 +40,8 @@ export default {
         return {
             search: '',
             loggedInUserPseudo: '',
-            groupes: [], // Liste des groupes récupérée du serveur
-            creationGroupeModal: null, // Ajoute une référence à la modal
+            groupes: [],
+            creationGroupeModal: null,
         };
     },
     computed: {
@@ -71,7 +71,6 @@ export default {
             this.loading = true;
             const token = this.$store.state.auth.user.accessToken;
 
-            // Configure les headers avec le token JWT
             const headers = {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -99,7 +98,6 @@ export default {
                 });
         },
         ouvrirModal() {
-            // Utilise la référence pour ouvrir la modal
             this.$refs.creationGroupeModal.ouvrirModal();
         },
     },

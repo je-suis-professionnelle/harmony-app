@@ -14,10 +14,10 @@
                         <label class="label">Label</label>
                         <div class="control">
                             <Field v-model="expenseData.label" name="label" as="select">
-            <option v-for="label in this.labelsList" :value="label.name">
-                {{ label.name }}
-            </option>
-        </Field>
+                                <option v-for="label in this.labelsList" :value="label.name">
+                                    {{ label.name }}
+                                </option>
+                            </Field>
                         </div>
                         <ErrorMessage class="help is-danger" name="label" />
                     </div>

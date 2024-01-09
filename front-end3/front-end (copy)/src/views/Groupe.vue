@@ -55,7 +55,8 @@
 
         <Resultat :total="this.total" :myTotal="this.myTotal" :division="this.division" />
 
-        <CreationDepense ref="creationDepenseModal" @expenseCreated="getDepenses" :groupId=this.groupId :labelsList="this.labelsList"/>
+        <CreationDepense ref="creationDepenseModal" @expenseCreated="getDepenses" :groupId=this.groupId
+            :labelsList="this.labelsList" />
 
         <AjouterMembre ref="ajoutMembreModal" :groupId=this.groupId />
 
@@ -65,7 +66,8 @@
 
         <AjoutLabelDepense ref="ajoutLabelModal" @labelCreated="this.getLabels" :groupId=this.groupId />
 
-        <SuppressionLabel ref="suppressionLabelModal" @labelRemoved="this.getLabels" :groupId=this.groupId :labelsList="this.labelsList"/>
+        <SuppressionLabel ref="suppressionLabelModal" @labelRemoved="this.getLabels" :groupId=this.groupId
+            :labelsList="this.labelsList" />
 
     </nav>
 </template>
@@ -218,9 +220,9 @@ export default {
                     this.total = this.depenses.reduce((acc, expense) => acc + expense.amount, 0);
                     this.myTotal = this.depenses.reduce((acc, expense) => (this.loggedInUserPseudo == expense.pseudo ? acc + expense.amount : acc), 0);
                     if (this.nbMembers > 0) {
-                        this.division = (this.total / this.nbMembers).toFixed(2); // Arrondit à 2 décimales
+                        this.division = (this.total / this.nbMembers).toFixed(2);
                     } else {
-                        this.division = 0; // Ou une valeur par défaut en cas de division par zéro
+                        this.division = 0;
                     }
                     this.calculerEquilibres();
                 })
@@ -272,27 +274,21 @@ export default {
         },
 
         ouvrirModal() {
-            // Utilise la référence pour ouvrir la modal
             this.$refs.creationDepenseModal.ouvrirModal();
         },
         ouvrirAjoutMembre() {
-            // Utilise la référence pour ouvrir la modal
             this.$refs.ajoutMembreModal.ouvrirModal();
         },
         ouvrirSuppressionMembre() {
-            // Utilise la référence pour ouvrir la modal
             this.$refs.suppressionMembreModal.ouvrirModal();
         },
         ouvrirSuppressionGroupe() {
-            // Utilise la référence pour ouvrir la modal
             this.$refs.suppressionGroupeModal.ouvrirModal();
         },
         ouvrirAjouterLabelDepense() {
-            // Utilise la référence pour ouvrir la modal
             this.$refs.ajoutLabelModal.ouvrirModal();
         },
         ouvrirSuppressionLabel() {
-            // Utilise la référence pour ouvrir la modal
             this.$refs.suppressionLabelModal.ouvrirModal();
         },
     },

@@ -10,13 +10,6 @@
             <section class="modal-card-body">
 
                 <Form :validation-schema="schema">
-                    <!-- <div class="field">
-                        <label class="label">Pseudo</label>
-                        <Field v-model="pseudo" name="pseudo" type="text" class="input"
-                            placeholder="Pseudo du membre à ajouter" />
-                        <ErrorMessage name="pseudo" />
-                        <p v-if="errorMessage" class="help is-danger">{{ errorMessage }}</p>
-                    </div> -->
                     <div class="field">
                         <label class="label">Pseudo</label>
                         <div class="control">
@@ -26,7 +19,7 @@
                                 </option>
                             </select>
                         </div>
-                        <ErrorMessage name="title" />
+                        <ErrorMessage name="pseudo" />
                     </div>
                 </Form>
             </section>
@@ -63,7 +56,7 @@ export default {
     },
     data() {
         return {
-            visible: false, // Initialiser la modal comme non visible
+            visible: false,
             loggedInUserPseudo: '',
             successful: false,
             loading: false,
@@ -76,7 +69,7 @@ export default {
             //         .max(50, "Le titre ne doit pas dépasser 50 caractères !"),
             // }),
             pseudo: '',
-            errorMessage: '', // New property for error message
+            errorMessage: '',
         };
     },
     methods: {

@@ -14,12 +14,6 @@
                     <label class="label">Pseudo</label>
                     <div class="control has-icons-left has-icons-right">
                       <Field name="pseudo" type="text" class="input" placeholder="Entrer votre pseudo" />
-                      <!-- <span class="icon is-small is-left">
-              <i class="fas fa-user"></i>
-            </span> -->
-                      <!-- <span class="icon is-small is-right">
-              <i class="fas fa-check" v-if="user.pseudo.length >= 5"></i>
-            </span> -->
                     </div>
                     <ErrorMessage name="pseudo" class="help is-danger" />
                   </div>

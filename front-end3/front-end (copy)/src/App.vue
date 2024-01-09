@@ -10,9 +10,9 @@ import { RouterView } from 'vue-router'
 import Navigation from './components/navigation.vue'
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import setupAxiosInterceptor from './router/axios-interceptor'; // Importez la fonction de configuration
+import setupAxiosInterceptor from './router/axios-interceptor';
 
-setupAxiosInterceptor(); 
+setupAxiosInterceptor();
 
 const loggedIn = ref(false);
 
