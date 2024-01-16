@@ -29,6 +29,10 @@ public class Expense {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "image_blob")
+    @Lob
+    private byte[] imageBlob;
+
     public Expense() {
 
     }
@@ -89,6 +93,14 @@ public class Expense {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public byte[] getImageBlob() {
+        return this.imageBlob;
+    }
+
+    public void setImageBlob(byte[] imageBlob) {
+        this.imageBlob = imageBlob;
     }
 
 }

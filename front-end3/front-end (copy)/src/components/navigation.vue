@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <router-link class="navbar-item" style="max-height: 128px;" to="/accueil">
+      <router-link class="navbar-item" style="max-height: 128px;" to="/">
           <img src="@/assets/logo2.png"  style="max-height: 80px;">
         <p class="navbar-item" style="color: white;">HARMONY</p>
       </router-link>

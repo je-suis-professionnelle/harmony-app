@@ -7,9 +7,9 @@
                 <p class="modal-card-title">Ajouter un membre</p>
                 <button class="delete" aria-label="close" @click="fermerModal"></button>
             </header>
-            <section class="modal-card-body">
 
-                <Form :validation-schema="schema">
+            <Form ref="form" :validation-schema="schema" @submit.prevent()="handleSubmit">
+            <section class="modal-card-body">
                     <div class="field">
                         <label class="label">Pseudo</label>
                         <Field v-model="pseudo" name="pseudo" type="text" class="input"
@@ -17,12 +17,12 @@
                         <ErrorMessage name="pseudo" />
                         <p v-if="errorMessage" class="help is-danger">{{ errorMessage }}</p>
                     </div>
-                </Form>
             </section>
             <footer class="modal-card-foot">
-                <button type="submit" class="button is-success" @click="addMember">Ajouter</button>
+                <button type="submit" class="button is-success">Ajouter</button>
                 <button class="button" @click="fermerModal">Annuler</button>
             </footer>
+        </Form>
         </div>
     </div>
 </template>
@@ -52,14 +52,12 @@ export default {
             successful: false,
             loading: false,
             message: '',
-            // schema: yup.object().shape({
-            //     title: yup.string()
-            //         .required("Le titre est requis !")
-            //         .min(5, "Le titre doit avoir au moins 5 caractères !")
-            //         .max(50, "Le titre ne doit pas dépasser 50 caractères !"),
-            // }),
+            schema: yup.object().shape({
+                pseudo: yup.string()
+                    .required("Le pseudo est requis !")
+            }),
             pseudo: '',
-            errorMessage: '', // New property for error message
+            errorMessage: '',
         };
     },
     methods: {
@@ -68,6 +66,14 @@ export default {
         },
         fermerModal() {
             this.visible = false;
+        },
+
+        async handleSubmit() {
+            await this.$refs.form.validate();
+
+            if (!this.$refs.form.errors) {
+                this.addMember();
+            }
         },
 
         addMember() {
@@ -90,6 +96,7 @@ export default {
             })
                 .then(response => {
                     console.log("response", response);
+                    this.$emit('memberAdded');
                     this.fermerModal();
                 })
                 .catch(error => {

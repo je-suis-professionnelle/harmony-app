@@ -7,10 +7,9 @@
                 <p class="modal-card-title">Créer un groupe</p>
                 <button class="delete" aria-label="close" @click="fermerModal"></button>
             </header>
-            <section class="modal-card-body">
+            <Form ref="form" :validation-schema="schema" @submit="handleSubmit">
 
-                <Form :validation-schema="schema">
-                    <Field name="idOwner" type="text" :value="loggedInUserPseudo" />
+            <section class="modal-card-body">
                     <div class="field">
                         <label class="label">Titre du groupe</label>
                         <div class="control has-icons-left has-icons-right">
@@ -18,14 +17,15 @@
                                 placeholder="Entrer le titre" />
                         </div>
                         <ErrorMessage name="title" class="help is-danger" />
+                        <p class="help is-danger">{{ errorMessage }}</p>
                     </div>
-                </Form>
 
             </section>
             <footer class="modal-card-foot">
-                <button type="submit" class="button is-success" @click="createGroup">Sauvegarder</button>
+                <button type="submit" class="button is-success">Sauvegarder</button>
                 <button class="button" @click="fermerModal">Annuler</button>
             </footer>
+        </Form>
         </div>
     </div>
 </template>
@@ -49,13 +49,14 @@ export default {
             schema: yup.object().shape({
                 title: yup.string()
                     .required("Le titre est requis !")
-                    .min(5, "Le titre doit avoir au moins 5 caractères !")
+                    .min(1, "Le titre doit avoir au moins 1 caractère !")
                     .max(50, "Le titre ne doit pas dépasser 50 caractères !"),
             }),
             groupData: {
                 idOwner: '',
                 title: '',
             },
+            errorMessage: "",
         };
     },
     created() {
@@ -64,6 +65,7 @@ export default {
         } else {
             this.loggedInUserPseudo = "problème";
         }
+        this.errorMessage = "";
     },
     methods: {
         ouvrirModal() {
@@ -73,16 +75,18 @@ export default {
             this.visible = false;
         },
 
+        async handleSubmit() {
+            await this.$refs.form.validate();
+
+            if (!this.$refs.form.errors) {
+                this.createGroup();
+            }
+        },
+
         async createGroup() {
-            console.log("dans createGroup");
             this.groupData.idOwner = this.loggedInUserPseudo;
-            this.message = "";
-            this.successful = false;
-            this.loading = true;
 
             try {
-                console.log("dans try");
-                console.log("titre", this.groupData.title);
                 const token = this.$store.state.auth.user.accessToken;
 
                 const headers = {
@@ -93,12 +97,6 @@ export default {
                 };
                 // Utilisation d'Axios pour effectuer la requête POST
                 const response = await axios.post("http://localhost:8080/groups/groups", this.groupData, headers);
-                // Traitement de la réponse
-                this.message = response.data.message;
-                this.successful = true;
-                this.loading = false;
-
-                console.log("groupid", response.data.identifiant);
 
                 this.createLabel({
                     name: "Restaurant",
@@ -116,9 +114,8 @@ export default {
                 this.fermerModal();
                 this.$emit('groupCreated');
             } catch (error) {
-                console.error("Erreur lors de la récupération des groupes :", error);
-                console.error("Erreur détaillée :", error.response.data);
-                console.log("catch :", error);
+                this.errorMessage = "Une erreur est survenue lors de la création du groupe.";
+                console.error("Erreur lors de la récupération des groupes :", error.response.data);
             }
         },
 
@@ -133,7 +130,6 @@ export default {
 
             try {
                 await axios.post("http://localhost:8080/label", label, headers);
-                console.log("label créé");
                 this.$emit("labelCreated");
                 this.fermerModal();
             } catch (error) {

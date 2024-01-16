@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Groupe from '../views/Groupe.vue';
+import Accueil from '../views/Accueil.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
 {
-      path: '/accueil',
+      path: '/',
       name: 'Accueil',
       component: Accueil
     },

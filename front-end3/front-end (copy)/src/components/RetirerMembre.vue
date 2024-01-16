@@ -98,6 +98,7 @@ export default {
                     if (this.pseudo == this.$store.state.auth.user.username) {
                         this.$router.push({ name: 'Groupes' });
                     } else {
+                        this.$emit("memberDeleted");
                         this.fermerModal();
                     }
                 })

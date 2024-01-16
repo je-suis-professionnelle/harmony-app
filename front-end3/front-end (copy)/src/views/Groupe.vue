@@ -56,11 +56,11 @@
         <Resultat :total="this.total" :myTotal="this.myTotal" :division="this.division" />
 
         <CreationDepense ref="creationDepenseModal" @expenseCreated="getDepenses" :groupId=this.groupId
-            :labelsList="this.labelsList" />
+            :labelsList="this.labelsList" :memberList="this.memberList" />
 
-        <AjouterMembre ref="ajoutMembreModal" :groupId=this.groupId />
+        <AjouterMembre ref="ajoutMembreModal" @memberAdded="this.getNbMembers" :groupId=this.groupId />
 
-        <RetirerMembre ref="suppressionMembreModal" :groupId=this.groupId :memberList="this.memberList" />
+        <RetirerMembre ref="suppressionMembreModal" @memberDeleted="this.getNbMembers" :groupId=this.groupId :memberList="this.memberList" />
 
         <SuppressionGroupe ref="suppressionGroupeModal" :groupId=this.groupId />
 

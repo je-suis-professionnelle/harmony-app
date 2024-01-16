@@ -8,7 +8,7 @@
                 <button class="delete" aria-label="close" @click="fermerModal"></button>
             </header>
 
-            <Form ref="form" :validation-schema="schema" @submit="handleSubmit">
+            <Form ref="form" :validation-schema="schema" @submit="handleSubmit" style="max-height:70vh; overflow: scroll;">
                 <section class="modal-card-body">
                     <div class="field">
                         <label class="label">Label</label>
@@ -27,6 +27,19 @@
                             placeholder="Montant de la dépense" />
                         <ErrorMessage class="help is-danger" name="amount" />
                     </div>
+
+                    <div class="field">
+                        <label class="label">Membre ayant payé</label>
+                        <div class="control">
+                            <Field v-model="expenseData.pseudo" name="owner" as="select">
+                                <option v-for="owner in this.memberList" :value="owner">
+                                    {{ owner }}
+                                </option>
+                            </Field>
+                        </div>
+                        <ErrorMessage class="help is-danger" name="label" />
+                    </div>
+
                     <div class="field">
                         <label class="label">Description</label>
                         <Field v-model="expenseData.description" name="description" type="text" class="input"
@@ -34,6 +47,25 @@
                         <ErrorMessage class="help is-danger" name="description" />
                     </div>
 
+                    <div class="field">
+                        <div class="file has-name">
+                            <label class="file-label">
+                                <input class="file-input" type="file" name="resume" @change="handleFileUpload">
+                                <span class="file-cta">
+                                    <span class="file-icon">
+                                        <i class="fas fa-upload"></i>
+                                    </span>
+                                    <span class="file-label">
+                                        Choose a file…
+                                    </span>
+                                </span>
+                                <span class="file-name">
+                                    {{ uploadedFileName ? uploadedFileName : 'Aucun fichier sélectionné' }}
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    <img class="image" v-if="imagePreview" :src="imagePreview" alt="Image preview" />
                 </section>
                 <footer class="modal-card-foot">
                     <button type="submit" class="button is-success">Sauvegarder</button>
@@ -64,15 +96,35 @@ export default {
         labelsList: {
             type: Array,
             required: true,
-        }
+        },
+        memberList: {
+            type: Array,
+            required: true,
+        },
+    },
+    setup() {
+        // const imagePreview = ref(null);
+        // const imageFile = ref(null);
+        // const uploadedFileName = ref('');
+
+        // function handleFileUpload(event) {
+        //     const file = event.target.files[0];
+        //     if (file && file.type.startsWith('image/')) {
+        //         const reader = new FileReader();
+        //         reader.onload = e => {
+        //             imagePreview.value = e.target.result;
+        //             uploadedFileName.value = file.name;
+        //         };
+        //         reader.readAsDataURL(file);
+        //     }
+        // }
+
+        // return { imagePreview, handleFileUploadv, uploadedFileName };
     },
     data() {
         return {
             visible: false,
             loggedInUserPseudo: '',
-            successful: false,
-            loading: false,
-            message: '',
             schema: yup.object().shape({
                 label: yup.string().required("Le champ Label est requis."),
                 amount: yup.number()
@@ -90,6 +142,9 @@ export default {
                 description: '',
             },
             label: null,
+            imagePreview: null,
+            imageFile: null,
+            uploadedFileName: '',
         };
     },
 
@@ -111,16 +166,12 @@ export default {
         },
 
         async createExpense() {
-            console.log("dans exepensecreate");
-            console.log("groupdId", this.groupId);
             this.expenseData.pseudo = this.$store.state.auth.user.username;
             this.expenseData.idGroup = Number(this.groupId);
             this.expenseData.timestamp = Date.now();
-            console.log(this.expenseData);
-
-            this.message = "";
-            this.successful = false;
-            this.loading = true;
+            if (this.imageFile) {
+                this.expenseData.image = this.imageFile;
+            }
 
             const token = this.$store.state.auth.user.accessToken;
 
@@ -131,26 +182,23 @@ export default {
             };
 
             try {
-                console.log("dans try");
                 const response = await axios.post("http://localhost:8080/expenses", this.expenseData, headers);
-                this.message = response.data.message;
-                this.successful = true;
-                this.loading = false;
                 this.fermerModal();
                 this.$emit('expenseCreated');
             } catch (error) {
-                console.log("dans catch", error.response);
-                console.error("Erreur détaillée :", error.response.data);
-                console.log("catch :", error);
-                this.message =
-                    (error.response &&
-                        error.response.data &&
-                        error.response.data.message) ||
-                    error.message ||
-                    error.toString();
-                this.successful = false;
-                this.loading = false;
-                console.log(this.message);
+                console.error("Erreur lors de la création de dépense :", error.response.data);
+            }
+        },
+
+        handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.imagePreview = e.target.result;
+                    this.uploadedFileName = file.name;
+                };
+                reader.readAsDataURL(file);
             }
         },
     },

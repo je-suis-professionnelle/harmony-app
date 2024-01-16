@@ -25,8 +25,7 @@
   <div class="tab-contents">
 
     <div class="content" v-bind:class="{ 'is-active': isActive == 'expenses' }">
-      <DepenseItem v-for="depense in this.expenses" :key="depense.identifiant"
-        @click="ouvrirSuppressionDepenseModal(depense)" :depense="depense" />
+      <DepenseItem v-for="depense in this.expenses" :key="depense.identifiant" :depense="depense" />
     </div>
 
     <div class="content" v-bind:class="{ 'is-active': isActive == 'balance' }">
@@ -47,14 +46,13 @@
 
   </div>
 
-  <SuppressionDepense ref="suppressionDepenseModal" @expenseDeleted="expenseDeletedHandler" :depense="clickedExpense" />
 </template>
 
 <script>
-import SuppressionDepense from "../components/SuppressionDepense.vue";
 import DepenseItem from "../components/DepenseItem.vue";
 import BalanceItem from "../components/BalanceItem.vue";
 import EquilibreItem from "../components/EquilibreItem.vue";
+import SuppressionDepense from "../components/SuppressionDepense.vue";
 
 export default {
 
