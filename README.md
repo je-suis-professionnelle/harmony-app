@@ -33,5 +33,6 @@ Backend
 Frontend
 
 1. Ouvrez le dossier front-end3/font-end (copy) dans votre terminal
-2. Installez le projet en exécutant la commande : '''bash npm run dev'''
-3. Ouvrez le lien apparaissant dans votre terminal
+2. Installez les dépendances en executant la commande : '''bash npm install'''
+3. Lancez le projet en exécutant la commande : '''bash npm run dev'''
+4. Ouvrez le lien apparaissant dans votre terminal
