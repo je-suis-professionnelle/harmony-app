@@ -57,54 +57,6 @@ public class ExpenseController {
         }
     }
 
-
-    /*@PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> createExpense(@RequestParam("expense") String expenseJson, @RequestParam(value = "imageBlob", required = false) MultipartFile imageBlob) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Expense expense = objectMapper.readValue(expenseJson, Expense.class);
-
-            if (imageBlob != null && !imageBlob.isEmpty()) {
-                byte[] imageBytes = imageBlob.getBytes();
-                expense.setImageBlob(imageBytes);
-            }
-
-            if (imageBlob != null && !imageBlob.isEmpty()) {
-                byte[] imageBytes = imageBlob.getBytes();
-                String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-                expense.setImageBlob(base64Image); // Assurez-vous que setImageBlob peut accepter une String
-            }
-
-            Expense savedExpense = expenseRepository.save(expense);
-            return new ResponseEntity<>(savedExpense, HttpStatus.CREATED);
-        } catch (IOException e) {
-            return new ResponseEntity<>("Erreur de traitement de l'image", HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Erreur interne du serveur", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }*/
-
-    /*@PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Expense> createExpense(@RequestParam("expense") String expenseJson, @RequestParam(value = "imageBlob", required = false) MultipartFile imageBlob) {
-        try {
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            Expense expense = objectMapper.readValue(expenseJson, Expense.class);
-
-            if (imageBlob != null && !imageBlob.isEmpty()) {
-                byte[] imageBytes = imageBlob.getBytes();
-                expense.setImageBlob(imageBytes);
-            }
-
-
-            Expense savedExpense = expenseRepository.save(expense);
-            return new ResponseEntity<>(savedExpense, HttpStatus.CREATED);
-        } catch (Exception e) {
-            System.out.println("Exception lors du createExpense : " + e);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }*/
-
     @DeleteMapping("/expense")
     public ResponseEntity<?> deleteExpense(@RequestParam(required = true) String pseudo, @RequestParam(required = true) long timestamp, @RequestParam(required = true) long idGroup) {
         try {

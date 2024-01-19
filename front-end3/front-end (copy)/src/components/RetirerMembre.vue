@@ -9,7 +9,7 @@
             </header>
             <section class="modal-card-body">
 
-                <Form :validation-schema="schema">
+                <Form ref="form" :validation-schema="schema">
                     <div class="field">
                         <label class="label">Pseudo</label>
                         <div class="control">
@@ -20,11 +20,12 @@
                             </select>
                         </div>
                         <ErrorMessage name="pseudo" />
+                        <p class="help is-danger">{{ errorMessage }}</p>
                     </div>
                 </Form>
             </section>
             <footer class="modal-card-foot">
-                <button type="submit" class="button is-success" @click="removeMember">Retirer</button>
+                <button type="submit" class="button is-success" @click="handleSubmit">Retirer</button>
                 <button class="button" @click="fermerModal">Annuler</button>
             </footer>
         </div>
@@ -53,6 +54,11 @@ export default {
             required: true,
             default: null
         },
+        expenses: {
+            type: Array,
+            required: true,
+            default: null
+        },
     },
     data() {
         return {
@@ -73,6 +79,24 @@ export default {
         };
     },
     methods: {
+        memberHasExpenses() {
+            for (let i = 0; i < this.expenses.length; i++) {
+                if (this.expenses[i].pseudo == this.pseudo) {
+                    this.errorMessage = "Le membre a encore des dépenses, veuillez régler les dépenses avant de le retirer.";
+                    return true;
+                }
+            }
+            return false;
+        },
+        
+        handleSubmit() {
+            this.$refs.form.validate().then(success => {
+                if (success && !this.memberHasExpenses()) {
+                    this.removeMember();
+                }
+            });
+        },
+
         ouvrirModal() {
             this.visible = true;
         },

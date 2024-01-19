@@ -21,8 +21,6 @@
 </template>
 
 <script>
-import Expense from '../models/expense.js';
-
 export default {
     name: 'AffichageImage',
     props: {

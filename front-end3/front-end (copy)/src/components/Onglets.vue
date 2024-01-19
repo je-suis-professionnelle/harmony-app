@@ -34,16 +34,19 @@
       <BalanceItem v-for="totalByMember in this.totalByMember" 
         :member="totalByMember[0]"
         :totalForMember="totalByMember[1]" 
-        :division="this.division" 
+        :division="Number(this.division)" 
         :balance="calculateBalance(totalByMember[1])" 
       />
     </div>
 
     <div class="content" v-bind:class="{ 'is-active': isActive == 'equilibre' }">
-      <EquilibreItem v-for="debtByMember in this.equilibres" 
+      <EquilibreItem v-if="this.equilibres.length!=0" v-for="debtByMember in this.equilibres" 
       :member="debtByMember.from" 
       :debtForMember="debtByMember.debt"
       :memberReceiving="debtByMember.to"/>
+      <div v-else class="box has-text-centered">
+        <p>Vous êtes à équilibre !</p>
+      </div>
     </div>
 
   </div>
@@ -81,16 +84,8 @@ export default {
       type: Number,
       required: true
     },
-    myTotal: {
-      type: Number,
-      required: true
-    },
     totalByMember: {
       type: Map,
-      required: true
-    },
-    total: {
-      type: Number,
       required: true
     },
     equilibres: {

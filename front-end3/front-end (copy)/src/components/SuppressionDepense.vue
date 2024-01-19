@@ -24,7 +24,7 @@ export default {
     props: {
         depense: {
             type: Expense,
-            required: true,
+            required: false,
         },
     },
     data() {

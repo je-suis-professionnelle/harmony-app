@@ -111,12 +111,4 @@ public class Expense {
         this.imageBlob = imageBlob;
     }
 
-    /*public byte[] getImageBlob() {
-        return this.imageBlob;
-    }
-
-    public void setImageBlob(byte[] imageBlob) {
-        this.imageBlob = imageBlob;
-    }*/
-
 }

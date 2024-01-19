@@ -52,8 +52,6 @@
                             <label class="file-label">
                                 <input class="file-input" type="file" accept=".jpg, .jpeg, .png"
                                     @change="handleFileUpload" />
-                                <!-- <input class="file-input" type="file" accept=".jpg, .jpeg, .png" name="resume" @change="handleFileUpload($event)" @click="$event.target.value=''"/> -->
-                                <!-- <input class="file-input" type="file" name="resume" v-on:change="handleFileUpload" /> -->
                                 <span class="file-cta">
                                     <span class="file-icon">
                                         <i class="fas fa-upload"></i>
@@ -160,16 +158,8 @@ export default {
             formData.append('expense', JSON.stringify(this.expenseData));
 
             if (this.imageFile) {
-                // const blob = new Blob([this.imageFile], { type: this.imageFile.type });
-                // this.expenseData.imageBlob = blob;
-                // formData.append('imageBlob', blob, this.imageFile.name);
                 formData.append('imageBlob', this.imageFile, this.imageFile.name);
             }
-
-            // Add other fields to the FormData object
-            // formData.append('label', this.expenseData.label);
-            // formData.append('amount', this.expenseData.amount);
-            // formData.append('description', this.expenseData.description);
 
             const token = this.$store.state.auth.user.accessToken;
 

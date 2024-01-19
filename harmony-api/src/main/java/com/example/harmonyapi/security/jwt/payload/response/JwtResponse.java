@@ -1,7 +1,5 @@
 package com.example.harmonyapi.security.jwt.payload.response;
 
-import java.util.List;
-
 public class JwtResponse {
     private String token;
     private String type = "Bearer";

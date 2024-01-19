@@ -5,8 +5,8 @@
                 <div class="column">
                     {{ member }}
                 </div>
-                <div class="column">
-                    {{ this.balance }}€
+                <div v-bind:class = "(this.balance<0)?'has-text-danger':''" class="column">
+                    {{ this.balance.toFixed(2) }}€
                 </div>
 
                 <div class="column">

@@ -6,7 +6,7 @@
                     {{ this.member }}
                 </div>
                 <div class="column">
-                    {{ this.debtForMember }}€
+                    {{ this.debtForMember.toFixed(2) }}€
                 </div>
 
                 <div class="column">

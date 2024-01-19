@@ -1,35 +1,39 @@
 <template>
-    <nav class="panel">
+    <nav class="panel is-primary m-3">
 
         <div class="panel-heading">
             <div class="container">
                 <div class="columns is-centered has-text-centered">
                     <div class="column">
-                        {{ title }}
+                        <div class="navbar-item">
+                            {{ title.toUpperCase() }}
+                        </div>
                     </div>
                     <div class="column">
-                        <div class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link">
-                                +
-                            </a>
+                        <div class="navbar-end">
+                            <div class="navbar-item dropdown-trigger has-dropdown is-hoverable">
+                                <a class="navbar-link">
+                                    Options
+                                </a>
 
-                            <div class="navbar-dropdown">
-                                <a class="navbar-item" @click="ouvrirAjoutMembre">
-                                    Ajouter un membre
-                                </a>
-                                <a class="navbar-item" @click="ouvrirSuppressionMembre">
-                                    Retirer un membre
-                                </a>
-                                <a class="navbar-item" @click="ouvrirAjouterLabelDepense">
-                                    Ajouter un label de dépense
-                                </a>
-                                <a class="navbar-item" @click="ouvrirSuppressionLabel">
-                                    Supprimer un label de dépense
-                                </a>
-                                <hr class="navbar-divider">
-                                <a class="navbar-item" @click="ouvrirSuppressionGroupe" style="color:red;">
-                                    Supprimer le groupe
-                                </a>
+                                <div class="navbar-dropdown">
+                                    <a class="navbar-item" @click="ouvrirAjoutMembre">
+                                        Ajouter un membre
+                                    </a>
+                                    <a class="navbar-item" @click="ouvrirSuppressionMembre">
+                                        Retirer un membre
+                                    </a>
+                                    <a class="navbar-item" @click="ouvrirAjouterLabelDepense">
+                                        Ajouter un label de dépense
+                                    </a>
+                                    <a class="navbar-item" @click="ouvrirSuppressionLabel">
+                                        Supprimer un label de dépense
+                                    </a>
+                                    <hr class="navbar-divider">
+                                    <a class="navbar-item" @click="ouvrirSuppressionGroupe" style="color:red;">
+                                        Supprimer le groupe
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -49,18 +53,19 @@
             </div>
         </div>
 
-        <Onglets @expenseDeletedO="getDepenses" :total="this.total" :expenses='this.expensesFiltered'
-            :division="this.division" :myTotal="this.myTotal" :totalByMember="this.filteredTotalByMember"
+        <Onglets @expenseDeletedO="getDepenses" :expenses='this.expensesFiltered'
+            :division=Number(this.division) :totalByMember="this.filteredTotalByMember"
             :equilibres="this.filteredEquilibres" />
 
-        <Resultat :total="this.total" :myTotal="this.myTotal" :division="this.division" />
+        <Resultat :total=Number(this.total) :myTotal=Number(this.myTotal) :division=Number(this.division) />
 
         <CreationDepense ref="creationDepenseModal" @expenseCreated="getDepenses" :groupId=this.groupId
             :labelsList="this.labelsList" :memberList="this.memberList" />
 
         <AjouterMembre ref="ajoutMembreModal" @memberAdded="this.getNbMembers" :groupId=this.groupId />
 
-        <RetirerMembre ref="suppressionMembreModal" @memberDeleted="this.getNbMembers" :groupId=this.groupId :memberList="this.memberList" />
+        <RetirerMembre ref="suppressionMembreModal" @memberDeleted="this.getNbMembers" :groupId=this.groupId
+            :memberList=this.memberList :expenses=this.depenses />
 
         <SuppressionGroupe ref="suppressionGroupeModal" :groupId=this.groupId />
 
