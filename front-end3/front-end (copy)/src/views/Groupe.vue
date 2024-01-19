@@ -11,29 +11,34 @@
                     </div>
                     <div class="column">
                         <div class="navbar-end">
-                            <div class="navbar-item dropdown-trigger has-dropdown is-hoverable">
-                                <a class="navbar-link">
-                                    Options
-                                </a>
+                            <div class="navbar-item dropdown is-hoverable">
+                                <div class="dropdown-trigger">
+                                    <button class="navbar-link">
+                                        <span>Actions</span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <div class="dropdown-content">
+                                            <a class="dropdown-item" @click="ouvrirAjoutMembre">
+                                                Ajouter un membre
+                                            </a>
+                                            <a class="dropdown-item" @click="ouvrirSuppressionMembre">
+                                                Retirer un membre
+                                            </a>
+                                            <a class="dropdown-item" @click="ouvrirAjouterLabelDepense">
+                                                Ajouter un label de dépense
+                                            </a>
+                                            <a class="dropdown-item" @click="ouvrirSuppressionLabel">
+                                                Supprimer un label de dépense
+                                            </a>
+                                            <hr class="dropdown-divider">
+                                            <a class="dropdown-item" @click="ouvrirSuppressionGroupe" style="color:red;">
+                                                Supprimer le groupe
+                                            </a>
+                                        </div>
+                                    </div>
 
-                                <div class="navbar-dropdown">
-                                    <a class="navbar-item" @click="ouvrirAjoutMembre">
-                                        Ajouter un membre
-                                    </a>
-                                    <a class="navbar-item" @click="ouvrirSuppressionMembre">
-                                        Retirer un membre
-                                    </a>
-                                    <a class="navbar-item" @click="ouvrirAjouterLabelDepense">
-                                        Ajouter un label de dépense
-                                    </a>
-                                    <a class="navbar-item" @click="ouvrirSuppressionLabel">
-                                        Supprimer un label de dépense
-                                    </a>
-                                    <hr class="navbar-divider">
-                                    <a class="navbar-item" @click="ouvrirSuppressionGroupe" style="color:red;">
-                                        Supprimer le groupe
-                                    </a>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -53,9 +58,8 @@
             </div>
         </div>
 
-        <Onglets @expenseDeletedO="getDepenses" :expenses='this.expensesFiltered'
-            :division=Number(this.division) :totalByMember="this.filteredTotalByMember"
-            :equilibres="this.filteredEquilibres" />
+        <Onglets @expenseDeletedO="getDepenses" :expenses='this.expensesFiltered' :division=Number(this.division)
+            :totalByMember="this.filteredTotalByMember" :equilibres="this.filteredEquilibres" />
 
         <Resultat :total=Number(this.total) :myTotal=Number(this.myTotal) :division=Number(this.division) />
 

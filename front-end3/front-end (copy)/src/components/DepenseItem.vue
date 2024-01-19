@@ -1,7 +1,7 @@
 <template>
-    <a class="panel-block">
+    <a class="panel-block" @click="handleClick">
         <div class="container">
-            <div class="columns is-centered has-text-centered">
+            <div class="columns  is-centered has-text-centered">
                 <div class="column is-centered has-text-centered">
                     {{ depense.pseudo }}
                 </div>
@@ -16,7 +16,6 @@
                 </div>
                 <div class="column is-centered has-text-centered">
                     <div class="container" @click="ouvrirSuppressionDepenseModal(depense)">
-
                         <a class="button is-hidden-tablet is-danger">
                             <span class="icon">
                                 <i class="fa fa-times"></i>

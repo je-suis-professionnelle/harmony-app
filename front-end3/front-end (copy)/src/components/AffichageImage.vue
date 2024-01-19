@@ -24,10 +24,6 @@
 export default {
     name: 'AffichageImage',
     props: {
-        // depense: {
-        //     type: Expense,
-        //     required: true,
-        // },
     },
     data() {
         return {
@@ -37,6 +33,7 @@ export default {
     },
     methods: {
         ouvrirModal(depense) {
+            console.log("affichageimage");
             this.visible = true;
             this.depense = depense;
         },
