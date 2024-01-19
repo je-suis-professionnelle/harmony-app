@@ -1,5 +1,5 @@
 <template>
-    <article class="panel is-primary m-5">
+    <article class="panel is-primary" style="margin-top:3%; margin-bottom: 5%; margin-left: 15%; margin-right: 15%;">
         <p class="panel-heading">
             Vos groupes
         </p>

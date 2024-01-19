@@ -1,0 +1,20 @@
+services:
+  front-end:
+    ports:
+      - "5173:5173"
+    links:
+      - back-end
+    restart: always
+  back-end:
+    ports:
+      - "8080:8080"
+    restart: always
+  db:
+    image: postgres
+    ports:
+      - "5433:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: pauline
+      POSTGRES_PASSWORD: harmony_db
+      POSTGRES_DB: harmony_db
