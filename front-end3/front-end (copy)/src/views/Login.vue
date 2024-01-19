@@ -66,8 +66,8 @@ export default {
   },
   data() {
     const schema = yup.object().shape({
-      pseudo: yup.string().required("Username is required!"),
-      mdp: yup.string().required("Password is required!"),
+      pseudo: yup.string().required("Le pseudo est requis !"),
+      mdp: yup.string().required("Le mot de passe est requis !"),
     });
 
     return {

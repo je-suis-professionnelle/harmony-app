@@ -66,7 +66,7 @@ export default {
       schema: yup.object().shape({
         pseudo: yup.string()
           .required("Le pseudo est requis !")
-          .min(5, "Le Pseudo doit avoir au moins 5 caractères !")
+          .min(4, "Le Pseudo doit avoir au moins 4 caractères !")
           .max(20, "Le Pseudo ne doit pas dépasser 20 caractères !"),
         mdp: yup.string()
           .required("Le mot de passe est requis !")
