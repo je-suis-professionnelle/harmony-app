@@ -1,18 +1,56 @@
+# services:
+#   harmony-front:
+#     image: pauline/harmony-front
+#     ports:
+#       - "5173:5173"
+#     links:
+#       - back-end
+#     restart: always
+#   back-end:
+#     image: pauline/harmony
+#     ports:
+#       - "8080:8080"
+#     restart: always
+#     links:
+#       - db
+#   db:
+#     image: postgres
+#     ports:
+#       - "5433:5432"
+#     restart: always
+#     environment:
+#       POSTGRES_USER: pauline
+#       POSTGRES_PASSWORD: harmony_db
+#       POSTGRES_DB: harmony_db
+
+version: '3.8'
 services:
-  front-end:
+  harmony-front:
+    build: 
+      context: ./front-end3/front-end (copy)
+      dockerfile: Dockerfile
     ports:
-      - "5173:5173"
-    links:
-      - back-end
+      - "80:80"
     restart: always
+
   back-end:
+    build: 
+      context: ./harmony-api
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/harmony_db
+      SPRING_DATASOURCE_USERNAME: pauline
+      SPRING_DATASOURCE_PASSWORD: harmony_db
+    depends_on:
+      - db
+
   db:
     image: postgres
     ports:
-      - "5433:5432"
+      - "5432:5432"
     restart: always
     environment:
       POSTGRES_USER: pauline
