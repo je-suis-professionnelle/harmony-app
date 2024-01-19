@@ -2,15 +2,8 @@
     <a class="panel-block">
         <div class="container">
             <div class="columns is-centered has-text-centered">
-                <div class="column">
-                    {{ this.member }}
-                </div>
-                <div class="column">
-                    {{ this.debtForMember.toFixed(2) }}€
-                </div>
-
-                <div class="column">
-                    {{ this.memberReceiving }}
+                <div class="column p-5">
+                    {{ this.member }} doit {{ this.debtForMember.toFixed(2) }}€ {{ this.memberReceiving }}
                 </div>
             </div>
         </div>

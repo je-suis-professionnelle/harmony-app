@@ -1,5 +1,5 @@
 <template>
-    <nav class="panel is-primary m-3">
+    <nav class="panel is-primary" style="margin-top:3%; margin-bottom: 5%; margin-left: 15%; margin-right: 15%;">
 
         <div class="panel-heading">
             <div class="container">
@@ -36,9 +36,7 @@
                                             </a>
                                         </div>
                                     </div>
-
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -46,7 +44,7 @@
             </div>
         </div>
 
-        <div class="panel-block">
+        <div class="panel-block m-5">
             <p class="control has-icons-left">
                 <input v-model="search" class="input is-primary" type="text" placeholder="Chercher">
                 <span class="icon is-left">
@@ -54,7 +52,7 @@
                 </span>
             </p>
             <div>
-                <button class="button is-primary" @click="ouvrirModal">Créer une dépense</button>
+                <button class="button is-primary ml-5" @click="ouvrirModal">Créer une dépense</button>
             </div>
         </div>
 

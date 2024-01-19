@@ -2,7 +2,7 @@
   <div class="tabs is-toggle is-fullwidth is-medium">
     <ul>
       <li class="">
-        <a>
+        <a class="p-5">
           <span class="icon"><i class="fas fa-image"></i></span>
           <div class="columns">
             <div class="column">
@@ -15,7 +15,7 @@
         </a>
       </li>
       <li>
-        <a>
+        <a class="p-5">
           <span class="icon"><i class="fas fa-music"></i></span>
           <div class="columns">
             <div class="column">
@@ -28,7 +28,7 @@
         </a>
       </li>
       <li>
-        <a>
+        <a class="p-5">
           <span class="icon"><i class="fas fa-film"></i></span>
           <div class="columns is-multiline">
             <div class="column">

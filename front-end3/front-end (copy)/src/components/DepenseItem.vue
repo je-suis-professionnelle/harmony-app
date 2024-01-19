@@ -1,17 +1,17 @@
 <template>
-    <a class="panel-block" @click="handleClick">
+    <a class="panel-block">
         <div class="container">
-            <div class="columns  is-centered has-text-centered">
-                <div class="column is-centered has-text-centered">
+            <div class="columns is-centered has-text-centered">
+                <div class="column is-centered has-text-centered" @click="handleClick">
                     {{ depense.pseudo }}
                 </div>
-                <div class="column is-centered has-text-centered">
+                <div class="column is-centered has-text-centered" @click="handleClick">
                     {{ depense.label }}
                 </div>
-                <div class="column is-centered has-text-centered">
+                <div class="column is-centered has-text-centered" @click="handleClick">
                     {{ depense.description }}
                 </div>
-                <div class="column is-centered has-text-centered">
+                <div class="column is-centered has-text-centered" @click="handleClick">
                     {{ depense.amount }}€
                 </div>
                 <div class="column is-centered has-text-centered">
