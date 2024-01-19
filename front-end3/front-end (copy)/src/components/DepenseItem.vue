@@ -2,24 +2,38 @@
     <a class="panel-block">
         <div class="container">
             <div class="columns is-centered has-text-centered">
-                <div class="column">
+                <div class="column is-centered has-text-centered">
                     {{ depense.pseudo }}
                 </div>
-                <div class="column">
+                <div class="column is-centered has-text-centered">
                     {{ depense.label }}
                 </div>
-
-                <div class="column">
+                <div class="column is-centered has-text-centered">
                     {{ depense.description }}
                 </div>
-                <div class="column">
+                <div class="column is-centered has-text-centered">
                     {{ depense.amount }}€
                 </div>
-                <div>
-                    <button class="button is-primary" @click="ouvrirSuppressionDepenseModal(depense)">Supprimer</button>
+                <div class="column is-centered has-text-centered">
+                    <div class="container" @click="ouvrirSuppressionDepenseModal(depense)">
+
+                        <a class="button is-hidden-tablet is-danger">
+                            <span class="icon">
+                                <i class="fa fa-times"></i>
+                            </span>
+                        </a>
+
+                        <a class="button is-hidden-mobile is-danger">
+                            <span class="icon">
+                                <i class="fa fa-times"></i>
+                            </span>
+                            <span>Supprimer</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
+
     </a>
     <SuppressionDepense ref="suppressionDepenseModal" @expenseDeleted="expenseDeletedHandler" :depense="clickedExpense" />
 </template>
@@ -33,18 +47,31 @@ export default {
     components: {
         SuppressionDepense,
     },
+    emits: ['expenseDeletedD'],
     props: {
         depense: {
             type: Expense,
             required: true,
         },
     },
+    inheritAttrs: false,
+    data() {
+        return {
+            clickedExpense: null,
+        };
+    },
     methods: {
+        expenseDeletedHandler() {
+            console.log("expensedelted depenseitem");
+            this.$emit('expenseDeletedD');
+        },
         ouvrirSuppressionDepenseModal(depense) {
             this.clickedExpense = depense;
             this.$refs.suppressionDepenseModal.ouvrirModal();
-            this.$emit('expenseDeletedD');
         },
+        handleClick() {
+            this.$emit('itemClicked', this.depense);
+        }
     },
 };
 </script>

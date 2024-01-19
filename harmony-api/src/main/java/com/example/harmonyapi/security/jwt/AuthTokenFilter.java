@@ -42,6 +42,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
+            /*else {
+                throw new ServletException("Invalid JWT token");
+            }*/
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e);
         }

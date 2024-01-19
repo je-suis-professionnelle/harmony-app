@@ -21,11 +21,10 @@ import Expense from '../models/expense.js';
 
 export default {
     name: 'SuppressionDepense',
-    emits: ['expenseDeleted'],
     props: {
         depense: {
             type: Expense,
-            required: false,
+            required: true,
         },
     },
     data() {

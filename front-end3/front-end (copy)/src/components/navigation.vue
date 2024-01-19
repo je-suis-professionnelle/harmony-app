@@ -2,7 +2,7 @@
   <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link class="navbar-item" style="max-height: 128px;" to="/">
-          <img src="@/assets/logo2.png"  style="max-height: 80px;">
+        <img src="@/assets/logo2.png" style="max-height: 80px;">
         <p class="navbar-item" style="color: white;">HARMONY</p>
       </router-link>
       <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -13,6 +13,23 @@
     </div>
 
     <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-start">
+        <!-- <div class="buttons">
+          <router-link v-if="this.$store.state.auth.status.loggedIn" class="button is-ghost" to="/groupes">
+            <strong>Mes groupes</strong>
+          </router-link>
+        </div> -->
+
+      </div>
+      <!-- <div class="buttons">
+        
+        <router-link v-if="!this.$store.state.auth.status.loggedIn" class="button is-light" to="/login">
+          Se connecter
+        </router-link>
+        <div v-if="this.$store.state.auth.status.loggedIn" class="button is-light" @click="logout">
+          Se déconnecter
+        </div>
+      </div> -->
       <!-- <div class="navbar-start">
         <router-link class="navbar-item" to="/home">
           Home
@@ -46,6 +63,9 @@
             </router-link>
             <router-link v-if="!this.$store.state.auth.status.loggedIn" class="button is-light" to="/login">
               Se connecter
+            </router-link>
+            <router-link v-if="this.$store.state.auth.status.loggedIn" class="button is-info" to="/groupes">
+              <strong>Mes groupes</strong>
             </router-link>
             <div v-if="this.$store.state.auth.status.loggedIn" class="button is-light" @click="logout">
               Se déconnecter

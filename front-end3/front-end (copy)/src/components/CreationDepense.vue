@@ -50,7 +50,10 @@
                     <div class="field">
                         <div class="file has-name">
                             <label class="file-label">
-                                <input class="file-input" type="file" name="resume" @change="handleFileUpload">
+                                <input class="file-input" type="file" accept=".jpg, .jpeg, .png"
+                                    @change="handleFileUpload" />
+                                <!-- <input class="file-input" type="file" accept=".jpg, .jpeg, .png" name="resume" @change="handleFileUpload($event)" @click="$event.target.value=''"/> -->
+                                <!-- <input class="file-input" type="file" name="resume" v-on:change="handleFileUpload" /> -->
                                 <span class="file-cta">
                                     <span class="file-icon">
                                         <i class="fas fa-upload"></i>
@@ -102,25 +105,6 @@ export default {
             required: true,
         },
     },
-    setup() {
-        // const imagePreview = ref(null);
-        // const imageFile = ref(null);
-        // const uploadedFileName = ref('');
-
-        // function handleFileUpload(event) {
-        //     const file = event.target.files[0];
-        //     if (file && file.type.startsWith('image/')) {
-        //         const reader = new FileReader();
-        //         reader.onload = e => {
-        //             imagePreview.value = e.target.result;
-        //             uploadedFileName.value = file.name;
-        //         };
-        //         reader.readAsDataURL(file);
-        //     }
-        // }
-
-        // return { imagePreview, handleFileUploadv, uploadedFileName };
-    },
     data() {
         return {
             visible: false,
@@ -149,6 +133,7 @@ export default {
     },
 
     methods: {
+
         ouvrirModal() {
             this.visible = true;
         },
@@ -169,20 +154,34 @@ export default {
             this.expenseData.pseudo = this.$store.state.auth.user.username;
             this.expenseData.idGroup = Number(this.groupId);
             this.expenseData.timestamp = Date.now();
+            console.log("this.imageFile", this.imageFile);
+            const formData = new FormData();
+
+            formData.append('expense', JSON.stringify(this.expenseData));
+
             if (this.imageFile) {
-                this.expenseData.image = this.imageFile;
+                // const blob = new Blob([this.imageFile], { type: this.imageFile.type });
+                // this.expenseData.imageBlob = blob;
+                // formData.append('imageBlob', blob, this.imageFile.name);
+                formData.append('imageBlob', this.imageFile, this.imageFile.name);
             }
+
+            // Add other fields to the FormData object
+            // formData.append('label', this.expenseData.label);
+            // formData.append('amount', this.expenseData.amount);
+            // formData.append('description', this.expenseData.description);
 
             const token = this.$store.state.auth.user.accessToken;
 
             const headers = {
                 headers: {
+                    'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${token}`,
                 }
             };
 
             try {
-                const response = await axios.post("http://localhost:8080/expenses", this.expenseData, headers);
+                const response = await axios.post("http://localhost:8080/expenses", formData, headers);
                 this.fermerModal();
                 this.$emit('expenseCreated');
             } catch (error) {
@@ -197,6 +196,7 @@ export default {
                 reader.onload = (e) => {
                     this.imagePreview = e.target.result;
                     this.uploadedFileName = file.name;
+                    this.imageFile = file;
                 };
                 reader.readAsDataURL(file);
             }

@@ -1,5 +1,5 @@
 <template>
-    <div v-if="visible" class="modal is-active" id="myModal">
+    <div v-if="visible" class="modal is-active" id="myModal" >
         <div class="modal-background">
         </div>
         <div class="modal-card">
@@ -8,7 +8,9 @@
                 <button class="delete" aria-label="close" @click="fermerModal"></button>
             </header>
             <div class="modal-card-body">
-                <img v-if="depense.image" :src="depense.image" alt="Image de la dépense" />
+                <!-- <img v-if="depense.image" :src="depense.image" alt="Image de la dépense" /> -->
+                <img v-if="depense.imageBlob" :src="'data:image/jpeg;base64,' + depense.imageBlob"
+                    alt="Image de la dépense" />
                 <p v-else>Aucun ticket pour cette dépense</p>
             </div>
             <footer class="modal-card-foot">
@@ -43,6 +45,7 @@ export default {
         fermerModal() {
             this.visible = false;
         },
+        
     },
 }
 

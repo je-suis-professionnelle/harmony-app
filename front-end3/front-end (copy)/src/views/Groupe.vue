@@ -49,7 +49,7 @@
             </div>
         </div>
 
-        <Onglets @expenseDeletedP="getDepenses" :total="this.total" :expenses='this.expensesFiltered'
+        <Onglets @expenseDeletedO="getDepenses" :total="this.total" :expenses='this.expensesFiltered'
             :division="this.division" :myTotal="this.myTotal" :totalByMember="this.filteredTotalByMember"
             :equilibres="this.filteredEquilibres" />
 
@@ -174,7 +174,6 @@ export default {
     },
     methods: {
         getNbMembers() {
-            this.loading = true;
             const token = this.$store.state.auth.user.accessToken;
 
             let config = {
@@ -191,7 +190,6 @@ export default {
                 })
                 .catch(error => {
                     console.error("Erreur lors de la récupération du groupe :", error);
-                    this.loading = false;
                 });
         },
 
@@ -208,7 +206,9 @@ export default {
 
             axios.get('http://localhost:8080/expenses', config)
                 .then(response => {
+                    console.log("response expense :", response);
                     this.depenses = response.data.map(depenseData => new Expense(depenseData));
+                    console.log("liste des depenses : ", this.depenses);
                     this.totalByMember = new Map(this.memberList.map(member => [member, 0]));
 
                     this.depenses.forEach(expense => {
@@ -217,8 +217,8 @@ export default {
                     this.$nextTick(() => {
                         this.$forceUpdate();
                     });
-                    this.total = this.depenses.reduce((acc, expense) => acc + expense.amount, 0);
-                    this.myTotal = this.depenses.reduce((acc, expense) => (this.loggedInUserPseudo == expense.pseudo ? acc + expense.amount : acc), 0);
+                    this.total = this.depenses.reduce((acc, expense) => acc + expense.amount, 0).toFixed(2);
+                    this.myTotal = this.depenses.reduce((acc, expense) => (this.loggedInUserPseudo == expense.pseudo ? acc + expense.amount : acc), 0).toFixed(2);
                     if (this.nbMembers > 0) {
                         this.division = (this.total / this.nbMembers).toFixed(2);
                     } else {
@@ -227,8 +227,7 @@ export default {
                     this.calculerEquilibres();
                 })
                 .catch(error => {
-                    console.error("Erreur lors de la récupération du groupe :", error);
-                    this.loading = false;
+                    console.error("Erreur lors de la récupération des dépenses :", error);
                 });
         },
 

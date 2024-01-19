@@ -1,6 +1,7 @@
 package com.example.harmonyapi.model;
 
 import com.example.harmonyapi.jpa.postgresql.ExpenseId;
+import org.hibernate.annotations.Type;
 import jakarta.persistence.*;
 
 @Entity
@@ -29,15 +30,22 @@ public class Expense {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "image_blob")
+    /*@Lob*/
+    /*@Column(name = "image_blob", columnDefinition="bytea")*/
+    /*@Type(type="org.hibernate.type.BinaryType")*/
+    /*@Column(name = "image")
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] imageBlob;*/
     @Lob
-    private byte[] imageBlob;
+    @Column(name = "image", columnDefinition="TEXT")
+    @Basic(fetch = FetchType.LAZY)
+    private String imageBlob;
 
     public Expense() {
 
     }
 
-    public Expense(String pseudo, long timestamp, long idGroup, double amount, String label, String description)
+    public Expense(String pseudo, long timestamp, long idGroup, double amount, String label, String description, String imageBlob)
     {
         this.pseudo = pseudo;
         this.timestamp = timestamp;
@@ -95,12 +103,20 @@ public class Expense {
         this.description = description;
     }
 
-    public byte[] getImageBlob() {
+    public String getImageBlob() {
+        return this.imageBlob;
+    }
+
+    public void setImageBlob(String imageBlob) {
+        this.imageBlob = imageBlob;
+    }
+
+    /*public byte[] getImageBlob() {
         return this.imageBlob;
     }
 
     public void setImageBlob(byte[] imageBlob) {
         this.imageBlob = imageBlob;
-    }
+    }*/
 
 }

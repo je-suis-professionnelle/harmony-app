@@ -3,7 +3,9 @@
     <ul>
       <li v-bind:class="{ 'is-active': isActive == 'expenses' }">
         <a v-on:click="isActive = 'expenses'">
-          <span class="icon is-small"><i class="fas fa-image" aria-hidden="true"></i></span>
+          <span class="icon is-small">
+            <i class="fas fa-image" aria-hidden="true"></i>
+          </span>
           <span>Dépenses</span>
         </a>
       </li>
@@ -25,7 +27,7 @@
   <div class="tab-contents">
 
     <div class="content" v-bind:class="{ 'is-active': isActive == 'expenses' }">
-      <DepenseItem v-for="depense in this.expenses" :key="depense.identifiant" :depense="depense" />
+      <DepenseItem v-for="depense in this.expenses" :key="depense.identifiant" :depense="depense" @expenseDeletedD="expenseDeletedHandler" @itemClicked="displayExpenseImage"/>
     </div>
 
     <div class="content" v-bind:class="{ 'is-active': isActive == 'balance' }">
@@ -46,6 +48,8 @@
 
   </div>
 
+  <AffichageImage ref="affichageImageModal"/>
+
 </template>
 
 <script>
@@ -53,6 +57,7 @@ import DepenseItem from "../components/DepenseItem.vue";
 import BalanceItem from "../components/BalanceItem.vue";
 import EquilibreItem from "../components/EquilibreItem.vue";
 import SuppressionDepense from "../components/SuppressionDepense.vue";
+import AffichageImage from "../components/AffichageImage.vue";
 
 export default {
 
@@ -60,12 +65,12 @@ export default {
     SuppressionDepense,
     DepenseItem,
     BalanceItem,
-    EquilibreItem
+    EquilibreItem,
+    AffichageImage
   },
 
   name: "Onglets",
-
-  emits: ['expenseDeletedP'],
+  emits: ['expenseDeletedO'],
 
   props: {
     expenses: {
@@ -108,13 +113,12 @@ export default {
       console.log("totalByMember", this.totalByMember);
       return totalForMember - this.division;
     },
-    ouvrirSuppressionDepenseModal(depense) {
-      this.clickedExpense = depense;
-      this.$refs.suppressionDepenseModal.ouvrirModal();
-    },
     expenseDeletedHandler() {
-      this.$emit('expenseDeletedP');
+      this.$emit('expenseDeletedO');
       console.log("expenseDeletedHandler");
+    },
+    displayExpenseImage(depense) {
+      this.$refs.affichageImageModal.ouvrirModal(depense);
     }
   }
 };

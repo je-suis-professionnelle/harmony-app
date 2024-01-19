@@ -6,6 +6,7 @@ class Expense {
         this.amount = data.amount;
         this.label = data.label;
         this.description = data.description;
+        this.imageBlob = data.imageBlob;
     }
 }
 
