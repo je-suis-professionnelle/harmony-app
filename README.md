@@ -9,30 +9,15 @@ Prérequis
 
 Pour lancer ce projet, vous devez avoir installé :
 
-- Node.js
-- Java JDK 17 (pour exécuter l'API Spring Boot)
-- Le gestionnaire de base de données Postgresql
+- Docker
 - Git pour cloner le projet
-- L'IDE Intellij
 
 Installation
 
 Tout d'abord clonez le projet dans un dossier à l'aide de git clone <url>
 
-Base de données
+Puis, ouvrez les dossier harmony-app dans votre terminal et entrez les commandes suivantes :
+'''bash sudo docker compose build''' ou '''bash sudo docker-compose build'''
+'''bash sudo docker compose up''' ou '''bash sudo docker-compose up'''
 
-1. Créez une nouvelle base de données "harmony_db"
-2. Créez une nouvelle connexion avec comme pseudo : pauline et comme mot de passe : harmony_db
-
-Backend
-
-1. Ouvrez le dossier "harmony-api" dans l'IDE intellij.
-2. Ajoutez la configuration pour lancer l'application (le bouton à gauche du bouton play) comme sur l'image ci-jointe
-![Alt text](image.png)
-
-Frontend
-
-1. Ouvrez le dossier front-end3/font-end (copy) dans votre terminal
-2. Installez les dépendances en executant la commande : '''bash npm install'''
-3. Lancez le projet en exécutant la commande : '''bash npm run dev'''
-4. Ouvrez le lien apparaissant dans votre terminal
+Enfin, accédez à l'URL http://localhost:80 à l'aide de votre navigateur.
