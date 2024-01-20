@@ -17,13 +17,13 @@ Pour lancer ce projet, vous devez avoir installé :
 Tout d'abord clonez le projet dans un dossier à l'aide de git clone https://github.com/je-suis-professionnelle/harmony-app
 
 Puis, ouvrez le dossier harmony-app dans votre terminal et entrez les commandes suivantes :
-``` sudo docker compose build```
+```sudo docker compose build```
 ou
-``` sudo docker-compose build```
+```sudo docker-compose build```
 
 puis
-``` sudo docker compose up'```
+```sudo docker compose up```
 ou
-``` sudo docker-compose up```
+```sudo docker-compose up```
 
 Enfin, accédez à l'URL http://localhost:80 à l'aide de votre navigateur.
