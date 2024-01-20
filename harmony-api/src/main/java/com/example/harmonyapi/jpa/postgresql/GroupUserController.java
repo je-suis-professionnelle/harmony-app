@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*") /* ça marche ce truc ??*/
+@CrossOrigin(origins = "*")
 @RestController
 public class GroupUserController {
     @Autowired

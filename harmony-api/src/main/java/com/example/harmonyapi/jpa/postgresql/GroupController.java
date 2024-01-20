@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*")/* ça marche ce truc ??*/
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/groups")
 public class GroupController {
@@ -38,8 +38,6 @@ public class GroupController {
                 System.out.println("username: " + username);
 
                 List<Group> groups;
-
-                // Utilise le username pour obtenir les groupes
                 groups = groupRepository.findGroupsByPseudoUser(username);
 
                 if (groups.isEmpty()) {
@@ -55,7 +53,7 @@ public class GroupController {
         }
     }
 
-    @PostMapping("/groups")
+    @PostMapping()
     public ResponseEntity<Group> createGroup(@RequestBody Group group) {
         try {
             Group savedGroup = groupRepository.save(group);

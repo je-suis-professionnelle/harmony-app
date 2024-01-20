@@ -9,7 +9,6 @@
               <h2 class="title">Inscription</h2>
 
               <Form @submit="handleRegister" :validation-schema="schema">
-                <div v-if="!successful">
                   <div class="field">
                     <label class="label">Pseudo</label>
                     <div class="control has-icons-left has-icons-right">
@@ -25,21 +24,19 @@
                     </div>
                     <ErrorMessage name="mdp" class="help is-danger" />
                   </div>
-                </div>
-                <div class="">
+                <div class="pt-3 pb-3">
                   <button class="button is-info" :disabled="loading">
-                    Sign Up
+                    S'inscrire
                   </button>
                 </div>
 
               </Form>
-              <div v-if="message" class="alert" :class="successful ? 'alert-success' : 'alert-danger'">
+              <div v-if="message" class="help is-danger">
                 {{ message }}
               </div>
 
               <span>Déjà inscrit ? <router-link to="/login">Se connecter</router-link> </span>
             </div>
-
           </div>
         </div>
       </div>
@@ -60,8 +57,6 @@ export default {
   },
   data() {
     return {
-      successful: false,
-      loading: false,
       message: '',
       schema: yup.object().shape({
         pseudo: yup.string()
@@ -70,33 +65,19 @@ export default {
           .max(20, "Le Pseudo ne doit pas dépasser 20 caractères !"),
         mdp: yup.string()
           .required("Le mot de passe est requis !")
-          .min(8, "Le mot de passe doit avoir au moins 8 caractères !")
+          .min(5, "Le mot de passe doit avoir au moins 5 caractères !")
           .max(20, "Le mot de passe ne doit pas dépasser 20 caractères !"),
       }),
     };
   },
-  computed: {
-    loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
-    }
-  },
-  mounted() {
-    if (this.loggedIn) {
-      this.$router.push('/groupes');
-    }
-  },
   methods: {
     handleRegister(user) {
       this.message = "";
-      this.successful = false;
-      this.loading = true;
 
       this.$store.dispatch("auth/register", user).then(
         (data) => {
           this.message = data.message;
-          this.successful = true;
-          this.loading = false;
-          this.$router.push({ path: '/login', query: { inscriptionSuccess: true } });
+          this.$router.push({ path: '/login'});
         },
         (error) => {
           this.message =
@@ -105,8 +86,6 @@ export default {
               error.response.data.message) ||
             error.message ||
             error.toString();
-          this.successful = false;
-          this.loading = false;
         }
       );
     }

@@ -35,7 +35,6 @@
 <script>
 import axios from "axios";
 import { Field, ErrorMessage, Form } from "vee-validate";
-import * as yup from "yup";
 
 export default {
     name: 'RetirerMembre',
@@ -68,12 +67,6 @@ export default {
             loading: false,
             message: '',
             selected: this.memberList == null ? "" : this.memberList[0],
-            // / schema: yup.object().shape({
-            //     title: yup.string()
-            //         .required("Le titre est requis !")
-            //         .min(5, "Le titre doit avoir au moins 5 caractères !")
-            //         .max(50, "Le titre ne doit pas dépasser 50 caractères !"),
-            // }),
             pseudo: '',
             errorMessage: '',
         };
@@ -118,7 +111,6 @@ export default {
 
             axios.delete('http://localhost:8080/groupUser', config)
                 .then(response => {
-                    console.log("response", response);
                     if (this.pseudo == this.$store.state.auth.user.username) {
                         this.$router.push({ name: 'Groupes' });
                     } else {

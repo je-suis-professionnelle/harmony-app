@@ -3,7 +3,7 @@
         <div class="container">
             <div class="columns is-centered has-text-centered">
                 <div class="column p-5">
-                    {{ this.member }} doit {{ this.debtForMember.toFixed(2) }}€ {{ this.memberReceiving }}
+                    {{ this.member }} doit {{ this.debtForMember.toFixed(2) }}€ à {{ this.memberReceiving }}
                 </div>
             </div>
         </div>

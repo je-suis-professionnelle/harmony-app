@@ -73,7 +73,6 @@ export default {
 
         async handleSubmit() {
             await this.$refs.form.validate();
-            console.log("handleSubmit", this.selected);
 
             if (!this.$refs.form.errors) {
                 this.removeLabel();
@@ -98,7 +97,6 @@ export default {
 
             axios.delete('http://localhost:8080/label', config)
                 .then(response => {
-                    console.log("response", response);
                     this.$emit("labelRemoved");
                     this.fermerModal();
                 })

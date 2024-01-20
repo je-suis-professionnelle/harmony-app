@@ -61,7 +61,6 @@ export default {
     },
     methods: {
         expenseDeletedHandler() {
-            console.log("expensedelted depenseitem");
             this.$emit('expenseDeletedD');
         },
         ouvrirSuppressionDepenseModal(depense) {

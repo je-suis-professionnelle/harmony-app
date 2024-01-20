@@ -5,7 +5,7 @@
             <div class="container">
                 <div class="columns is-centered has-text-centered">
                     <div class="column">
-                        <div class="navbar-item">
+                        <div class="navbar-item has-text-white">
                             {{ title.toUpperCase() }}
                         </div>
                     </div>
@@ -64,9 +64,9 @@
         <CreationDepense ref="creationDepenseModal" @expenseCreated="getDepenses" :groupId=this.groupId
             :labelsList="this.labelsList" :memberList="this.memberList" />
 
-        <AjouterMembre ref="ajoutMembreModal" @memberAdded="this.getNbMembers" :groupId=this.groupId />
+        <AjouterMembre ref="ajoutMembreModal" @memberAdded="this.handleMemberAdded" :groupId=this.groupId />
 
-        <RetirerMembre ref="suppressionMembreModal" @memberDeleted="this.getNbMembers" :groupId=this.groupId
+        <RetirerMembre ref="suppressionMembreModal" @memberDeleted="this.handleMemberAdded" :groupId=this.groupId
             :memberList=this.memberList :expenses=this.depenses />
 
         <SuppressionGroupe ref="suppressionGroupeModal" :groupId=this.groupId />
@@ -175,12 +175,15 @@ export default {
         },
     },
     created() {
-        console.log("groupid created", this.groupId);
         this.getDepenses();
         this.getLabels();
     },
     methods: {
-        getNbMembers() {
+        async handleMemberAdded() {
+            await this.getNbMembers();
+            await this.getDepenses();
+        },
+        async getNbMembers() {
             const token = this.$store.state.auth.user.accessToken;
 
             let config = {
@@ -190,7 +193,7 @@ export default {
                 },
             }
 
-            axios.get('http://localhost:8080/groupUsers', config)
+            await axios.get('http://localhost:8080/groupUsers', config)
                 .then(response => {
                     this.memberList = response.data.map(member => member.pseudoUser);
                     this.nbMembers = response.data.length;
@@ -200,7 +203,7 @@ export default {
                 });
         },
 
-        getDepenses() {
+        async getDepenses() {
             this.getNbMembers();
             const token = this.$store.state.auth.user.accessToken;
 
@@ -211,11 +214,9 @@ export default {
                 },
             }
 
-            axios.get('http://localhost:8080/expenses', config)
+            await axios.get('http://localhost:8080/expenses', config)
                 .then(response => {
-                    console.log("response expense :", response);
                     this.depenses = response.data.map(depenseData => new Expense(depenseData));
-                    console.log("liste des depenses : ", this.depenses);
                     this.totalByMember = new Map(this.memberList.map(member => [member, 0]));
 
                     this.depenses.forEach(expense => {
@@ -271,7 +272,6 @@ export default {
 
             axios.get('http://localhost:8080/labels', config)
                 .then(response => {
-                    console.log("response", response);
                     this.labelsList = response.data;
                 })
                 .catch(error => {

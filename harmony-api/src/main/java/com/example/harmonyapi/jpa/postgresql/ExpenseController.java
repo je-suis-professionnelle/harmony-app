@@ -31,7 +31,6 @@ public class ExpenseController {
                 return new ResponseEntity<>(expenses, HttpStatus.OK);
             }
         } catch (Exception e) {
-            System.out.println("Exception lors du getExpenses : " + e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -63,46 +62,6 @@ public class ExpenseController {
             Expense expense = expenseRepository.findByPseudoAndTimestampAndIdGroup(pseudo, timestamp, idGroup);
             expenseRepository.delete(expense);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/byPseudoTimestampAndIdGroup")
-    public ResponseEntity<Expense> getExpensesByPseudoAndTimestampAndIdGroup(@RequestParam(required = true) String pseudo, @RequestParam(required = true) long timestamp, @RequestParam(required = true) long idGroup) {
-        try {
-            Expense expense = expenseRepository.findByPseudoAndTimestampAndIdGroup(pseudo, timestamp, idGroup);
-            return new ResponseEntity<>(expense, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/byTimestamp")
-    public ResponseEntity<List<Expense>> getExpensesByPseudoAndTimestamp(@RequestParam(required = true) String pseudo, @RequestParam(required = true) long timestamp) {
-        try {
-            List<Expense> expenses = expenseRepository.findByPseudoAndTimestamp(pseudo, timestamp);
-            return new ResponseEntity<>(expenses, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/byIdGroup")
-    public ResponseEntity<List<Expense>> getExpensesByPseudoAndIdGroup(@RequestParam(required = true) String pseudo, @RequestParam(required = true) long idGroup) {
-        try {
-            List<Expense> expenses = expenseRepository.findByPseudoAndIdGroup(pseudo, idGroup);
-            return new ResponseEntity<>(expenses, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/byTimestampAndIdGroup")
-    public ResponseEntity<List<Expense>> getExpensesByTimestampAndIdGroup(@RequestParam(required = true) long timestamp, @RequestParam(required = true) long idGroup) {
-        try {
-            List<Expense> expenses = expenseRepository.findByTimestampAndIdGroup(timestamp, idGroup);
-            return new ResponseEntity<>(expenses, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

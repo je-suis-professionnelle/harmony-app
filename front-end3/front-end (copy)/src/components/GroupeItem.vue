@@ -1,7 +1,7 @@
 <template>
     <a class="panel-block" @click="goToGroupe">
         <span class="panel-icon">
-            <i class="fas fa-book" aria-hidden="true"></i>
+            <i class="fas fa-users"></i>
         </span>
         {{ groupe.title }}
     </a>

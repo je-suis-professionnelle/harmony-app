@@ -3,7 +3,7 @@
     <ul>
       <li class="">
         <a class="p-5">
-          <span class="icon"><i class="fas fa-image"></i></span>
+          <span class="icon"><i class="fas fa-sack-dollar"></i></span>
           <div class="columns">
             <div class="column">
               <span>Vos dépenses</span>
@@ -16,7 +16,7 @@
       </li>
       <li>
         <a class="p-5">
-          <span class="icon"><i class="fas fa-music"></i></span>
+          <span class="icon"><i class="fas fa-balance-scale"></i></span>
           <div class="columns">
             <div class="column">
               <span>Montant visé chacun</span>
@@ -29,7 +29,7 @@
       </li>
       <li>
         <a class="p-5">
-          <span class="icon"><i class="fas fa-film"></i></span>
+          <span class="icon"><i class="fas fa-sack-dollar"></i></span>
           <div class="columns is-multiline">
             <div class="column">
               <span>TOTAL</span>

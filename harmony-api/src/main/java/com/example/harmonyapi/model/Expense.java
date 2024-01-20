@@ -1,7 +1,6 @@
 package com.example.harmonyapi.model;
 
 import com.example.harmonyapi.jpa.postgresql.ExpenseId;
-import org.hibernate.annotations.Type;
 import jakarta.persistence.*;
 
 @Entity
@@ -30,12 +29,6 @@ public class Expense {
     @Column(name = "description")
     private String description;
 
-    /*@Lob*/
-    /*@Column(name = "image_blob", columnDefinition="bytea")*/
-    /*@Type(type="org.hibernate.type.BinaryType")*/
-    /*@Column(name = "image")
-    @Basic(fetch = FetchType.LAZY)
-    private byte[] imageBlob;*/
     @Lob
     @Column(name = "image", columnDefinition="TEXT")
     @Basic(fetch = FetchType.LAZY)

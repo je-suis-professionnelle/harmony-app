@@ -14,7 +14,10 @@
                 <button class="button is-primary ml-1" @click="ouvrirModal">Créer un groupe</button>
             </div>
         </div>
-        <GroupeItem v-for="groupe in this.groupesFiltered" :key=groupe.identifiant :groupe="groupe" />
+        <GroupeItem v-if="this.groupesFiltered.length!=0" v-for="groupe in this.groupesFiltered" :key=groupe.identifiant :groupe="groupe" />
+        <div v-else class="box has-text-centered">
+            <p>Vous n'avez pas de groupes pour le moment !</p>
+        </div>
         <CreationGroupe ref="creationGroupeModal" @groupCreated="getGroupes" />
     </article>
 </template>
@@ -78,11 +81,9 @@ export default {
             };
             axios.get('http://localhost:8080/groups', headers)
                 .then(response => {
-                    console.log("response : ", response);
                     if (response.data.length != 0) {
                         this.groupes = response.data.map(groupData => new Groupe(groupData));
                     }
-                    console.log("groupes : ", this.groupes);
                     this.loading = false;
                 })
                 .catch(error => {

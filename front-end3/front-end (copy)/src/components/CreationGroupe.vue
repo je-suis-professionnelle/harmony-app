@@ -96,7 +96,7 @@ export default {
                     },
                 };
                 // Utilisation d'Axios pour effectuer la requête POST
-                const response = await axios.post("http://localhost:8080/groups/groups", this.groupData, headers);
+                const response = await axios.post("http://localhost:8080/groups", this.groupData, headers);
 
                 this.createLabel({
                     name: "Restaurant",

@@ -13,48 +13,6 @@
     </div>
 
     <div id="navbarBasicExample" class="navbar-menu">
-      <div class="navbar-start">
-        <!-- <div class="buttons">
-          <router-link v-if="this.$store.state.auth.status.loggedIn" class="button is-ghost" to="/groupes">
-            <strong>Mes groupes</strong>
-          </router-link>
-        </div> -->
-
-      </div>
-      <!-- <div class="buttons">
-        
-        <router-link v-if="!this.$store.state.auth.status.loggedIn" class="button is-light" to="/login">
-          Se connecter
-        </router-link>
-        <div v-if="this.$store.state.auth.status.loggedIn" class="button is-light" @click="logout">
-          Se déconnecter
-        </div>
-      </div> -->
-      <!-- <div class="navbar-start">
-        <router-link class="navbar-item" to="/home">
-          Home
-        </router-link>
-
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">
-            More
-          </a>
-
-          <div class="navbar-dropdown">
-            <router-link class="navbar-item" to="/about">
-              About
-            </router-link>
-            <router-link class="navbar-item" to="/contact">
-              Contact
-            </router-link>
-            <hr class="navbar-divider">
-            <router-link class="navbar-item" to="/report">
-              Report an issue
-            </router-link>
-          </div>
-        </div>
-      </div> -->
-
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">

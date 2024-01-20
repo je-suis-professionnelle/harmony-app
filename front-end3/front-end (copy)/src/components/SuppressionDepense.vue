@@ -49,11 +49,8 @@ export default {
                     idGroup: this.depense.idGroup
                 },
             }
-            console.log("idGroup", this.depense.idGroup);
             axios.delete("http://localhost:8080/expenses/expense", config)
                 .then(response => {
-
-                    console.log("response", response);
                     this.$emit('expenseDeleted');
                     this.fermerModal();
                 })

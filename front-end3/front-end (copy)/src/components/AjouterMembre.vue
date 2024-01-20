@@ -47,7 +47,7 @@ export default {
     },
     data() {
         return {
-            visible: false, // Initialiser la modal comme non visible
+            visible: false,
             loggedInUserPseudo: '',
             successful: false,
             loading: false,
@@ -88,14 +88,10 @@ export default {
                 idGroup: this.groupId
             }
 
-            console.log("data", data);
-            console.log("headers", headers);
-
             axios.post('http://localhost:8080/groupUser', data, {
                 headers: headers
             })
                 .then(response => {
-                    console.log("response", response);
                     this.$emit('memberAdded');
                     this.fermerModal();
                 })

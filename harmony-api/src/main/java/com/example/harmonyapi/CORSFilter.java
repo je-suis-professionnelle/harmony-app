@@ -30,8 +30,6 @@ public class CORSFilter implements Filter {
     private String accessControlAllowMaxAge = DEFAULT_ACCESS_CONTROL_MAX_AGE_VALUE;
     private String accessControlAllowHeaders = DEFAULT_ACCESS_CONTROL_ALLOW_HEADERS_VALUE;
 
-    /**
-     * @return the method return a map that associated the name of paramiters in the web.xml to the class variable name for the header binding*/
     private Map<String,String> initConfig(){
         Map<String, String> result = new HashMap<>();
 

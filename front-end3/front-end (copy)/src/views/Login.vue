@@ -4,16 +4,7 @@
       <div class="container">
         <div class="columns is-centered">
           <div class="column is-5-tablet is-4-desktop is-3-widescreen">
-
-            <div v-if="inscriptionSuccess">
-              <p>Félicitations, votre inscription a bien été réalisée. Veuillez vous connecter.</p>
-            </div>
             <div class="box custom-box">
-              <div class="banner_high">
-                <div v-if="inscriptionSuccess">
-                  <p>Félicitations, votre inscription a bien été réalisée. Veuillez vous connecter.</p>
-                </div>
-              </div>
               <h2 class="title" style="color: black;">Connexion</h2>
               <Form @submit="handleLogin" :validation-schema="schema">
                 <div class="field">
@@ -74,13 +65,7 @@ export default {
       loading: false,
       message: "",
       schema,
-      inscriptionSuccess: false,
     };
-  },
-  created() {
-    if (this.$route.query.inscriptionSuccess) {
-      this.inscriptionSuccess = true;
-    }
   },
   computed: {
     loggedIn() {

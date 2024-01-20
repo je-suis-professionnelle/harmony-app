@@ -51,7 +51,6 @@ export default {
             axios.delete('http://localhost:8080/groups/group', config
             )
                 .then(response => {
-                    console.log("response", response);
                     this.fermerModal();
                     this.$router.push({ name: 'Groupes' });
                 })

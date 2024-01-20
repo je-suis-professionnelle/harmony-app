@@ -31,7 +31,7 @@
                     <div class="field">
                         <label class="label">Membre ayant payé</label>
                         <div class="control">
-                            <Field v-model="expenseData.pseudo" name="owner" as="select">
+                            <Field v-model="this.expenseData.pseudo" name="owner" as="select">
                                 <option v-for="owner in this.memberList" :value="owner">
                                     {{ owner }}
                                 </option>
@@ -108,7 +108,7 @@ export default {
             visible: false,
             loggedInUserPseudo: '',
             schema: yup.object().shape({
-                label: yup.string().required("Le champ Label est requis."),
+                label: yup.string().required("Le champ est requis."),
                 amount: yup.number()
                     .typeError('Le montant doit être un nombre.')
                     .min(0.01, "Le montant doit être supérieur ou égal à un centime.")
@@ -149,10 +149,8 @@ export default {
         },
 
         async createExpense() {
-            this.expenseData.pseudo = this.$store.state.auth.user.username;
             this.expenseData.idGroup = Number(this.groupId);
             this.expenseData.timestamp = Date.now();
-            console.log("this.imageFile", this.imageFile);
             const formData = new FormData();
 
             formData.append('expense', JSON.stringify(this.expenseData));

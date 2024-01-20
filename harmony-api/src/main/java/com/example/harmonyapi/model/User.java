@@ -26,18 +26,6 @@ public class User {
         this.pseudo = pseudo;
     }
 
-
-
-    /* public void addGroup(Group group) {
-        if (groupUsers == null) {
-            groupUsers = new ArrayList<>();
-        }
-        GroupUser groupUser = new GroupUser(group, this);
-
-        groupUsers.add(groupUser);
-    }
-     */
-
     public String getMdp() {
         return mdp;
     }
