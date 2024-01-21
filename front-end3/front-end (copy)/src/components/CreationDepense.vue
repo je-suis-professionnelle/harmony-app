@@ -66,7 +66,10 @@
                             </label>
                         </div>
                     </div>
-                    <img class="image" v-if="imagePreview" :src="imagePreview" alt="Image preview" />
+                    <div class="field" v-if="imagePreview">
+                        <img class="image" :src="imagePreview" alt="Image preview" />
+                        <button class="button is-danger mt-3" @click="deleteImage">Supprimer l'image</button>
+                    </div>
                 </section>
                 <footer class="modal-card-foot">
                     <button type="submit" class="button is-success">Sauvegarder</button>
@@ -135,8 +138,15 @@ export default {
         ouvrirModal() {
             this.visible = true;
         },
+        
         fermerModal() {
             this.visible = false;
+        },
+
+        deleteImage() {
+            this.imagePreview = null;
+            this.uploadedFileName = '';
+            this.imageFile = null;
         },
 
         async handleSubmit() {
