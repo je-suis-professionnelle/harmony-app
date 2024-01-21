@@ -30,9 +30,9 @@ Enfin, accédez à l'URL http://localhost:80 à l'aide de votre navigateur.
 
 ## Utilisation
 
-L'utilisateur doit avant tout se créer un compte puis se connecter pour accéder à ses groupes.
-Une fois connecté, il a accès à tous ses groupes, peut les filtrer grâce à une barre de recherche, et en créer un nouveau.
-Lorsqu'il clique sur un des groupes, il a accès aux dépenses du groupe qu'il peut filtrer grâce à une barre de recherche. Il peut en créer des nouvelles, ajouter une image liée à cette dépense, et n'aura qu'à cliquer sur la dépense pour visualiser l'image. Il peut supprimer la dépense grâce à un bouton situé sur la dépense.
-Il peut ajouter des membres à ce groupe, si le membre possède un compte dans cette application. Il peut également retirer les membres qu'il veut, à condition qu'ils n'aient plus de dépenses en cours dans le groupe.
-Il peut gérer les labels de dépense du groupe, en ajouter ou en supprimer.
-Il a évidemment accès à l'onglet balance, qui montre combien chaque membre à dépensé selon le montant visé chacun. Dans l'onglet équilibrer, il voit qui doit combien à qui, pour arriver au montant visé chacun.
+- L'utilisateur doit avant tout se créer un compte puis se connecter pour accéder à ses groupes.
+- Une fois connecté, il a accès à tous ses groupes, peut les filtrer grâce à une barre de recherche, et en créer un nouveau.
+- Lorsqu'il clique sur un des groupes, il a accès aux dépenses du groupe qu'il peut filtrer grâce à une barre de recherche. Il peut en créer des nouvelles, ajouter une image liée à cette dépense, et n'aura qu'à cliquer sur la dépense pour visualiser l'image. Il peut supprimer la dépense grâce à un bouton situé sur la dépense.
+- Il peut ajouter des membres à ce groupe, si le membre possède un compte dans cette application. Il peut également retirer les membres qu'il veut, à condition qu'ils n'aient plus de dépenses en cours dans le groupe.
+- Il peut gérer les labels de dépense du groupe, en ajouter ou en supprimer.
+- Il a évidemment accès à l'onglet balance, qui montre combien chaque membre à dépensé selon le montant visé chacun. Dans l'onglet équilibrer, il voit qui doit combien à qui, pour arriver au montant visé chacun.
